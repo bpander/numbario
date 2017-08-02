@@ -15,7 +15,7 @@ import uglify from 'gulp-uglify';
 
 export default function vendor() {
     const vendorArray = [...Object.keys(pkg.browser), ...Object.keys(pkg.dependencies)];
-    const bundler = browserify({ debug: false });
+    const bundler = browserify({ debug: false }).transform('envify', { global: true });
 
     // individually require all libs specified in vendor list
     vendorArray.forEach(vendor => {
