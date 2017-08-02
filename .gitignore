@@ -8,3 +8,5 @@ web/
 ._.DS_Store
 env/local.env
 npm-debug.log
+
+src/assets/scripts/_config.css.json

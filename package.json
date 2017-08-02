@@ -37,6 +37,7 @@
     "browserify": "13.0.1",
     "browserify-shim": "3.8.12",
     "cross-env": "2.0.0",
+    "css-variables-parser": "^0.1.0",
     "del": "2.2.1",
     "env-merger": "1.0.0",
     "envify": "^4.1.0",
@@ -59,6 +60,7 @@
     "postcss-discard-comments": "2.0.4",
     "postcss-import": "8.1.0",
     "run-sequence": "1.2.2",
+    "through2": "^2.0.3",
     "vinyl-buffer": "1.0.0",
     "vinyl-source-stream": "1.1.0",
     "watchify": "3.7.0"
