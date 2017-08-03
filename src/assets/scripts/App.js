@@ -23,10 +23,6 @@ export default class App extends Component {
     const { didFoo } = this.props;
     return (
       <div>
-        Welcome to the client-side boilerplate!
-        {(didFoo) && (
-          <div>Redux is working!</div>
-        )}
       </div>
     );
   }
