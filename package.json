@@ -41,6 +41,7 @@
     "del": "2.2.1",
     "env-merger": "1.0.0",
     "envify": "^4.1.0",
+    "eslint-plugin-inferno": "^7.0.1",
     "gulp": "3.9.1",
     "gulp-clean-css": "2.0.11",
     "gulp-hb": "5.1.0",

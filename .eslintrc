@@ -18,6 +18,9 @@
     "process": true
   },
   "parser": "babel-eslint",
+  "plugins": [
+    "inferno"
+  ],
   "rules": {
     ###############################################################################################
     # ARRAYS <https://github.com/thenerdery/javascript-standards#arrays>
@@ -102,6 +105,7 @@
     # FUNCTIONS <https://github.com/thenerdery/javascript-standards#functions>
     ###############################################################################################
 
+    "complexity": ["error", 5],                   # Disallow overly complex functions
     "no-param-reassign": [2, {"props": true}],    # Disallow reassignment of parameters
     "max-params": [2, 5],                         # Disallow more than 5 parameters
     "prefer-rest-params": 2,                      # Require rest parameters instead of `arguments`
@@ -176,7 +180,11 @@
     "no-const-assign": 2,                         # Disallow modifying const variables
     "no-var": 2,                                  # Disallow use of `var`
     "one-var": [2, "never"],                      # Disallow one variable declaration per scope
+    "no-shadow": 2,                               # Disallow variable shadowing
     "no-undef": 2,                                # Disallow undeclared variables
+    "no-unused-vars": 2,                          # Disallow unused variables
+    "inferno/jsx-uses-vars": 2,
+    "inferno/jsx-uses-inferno": 2,
 
     ###############################################################################################
     # WHITESPACE <https://github.com/thenerdery/javascript-standards#whitespace>
@@ -190,7 +198,7 @@
     }],
     "no-whitespace-before-property": 2,           # Disallow whitespace before properties
     "space-in-parens": [2, "never"],              # Disallow spaces inside of parentheses
-    "array-bracket-spacing": [2, "never"],        # Disallow spaces inside of brackets
+    "array-bracket-spacing": [2, "always"],       # Require spaces inside of brackets
     "object-curly-spacing": [2, "always"],        # Require spaces inside object curly braces
     "max-len": [2, {                              # Disallow lines over 100 characters
       "code": 100,
