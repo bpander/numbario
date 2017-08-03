@@ -16,3 +16,5 @@ Inferno.render(
   </Provider>,
   node,
 );
+
+window.store = store;

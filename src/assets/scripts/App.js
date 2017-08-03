@@ -1,22 +1,15 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
 import { connect } from 'inferno-redux';
-import { bindActionCreators } from 'redux';
-import * as actions from './actions/actions';
+import * as numbersActions from 'actions/numbersActions';
 
-const mapStateToProps = state => {
-  return { didFoo: state.didFoo };
-};
 
-const mapDispatchToProps = dispatch => {
-  return { actions: bindActionCreators(actions, dispatch) };
-};
-
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(state => state)
 export default class App extends Component {
 
   componentDidMount() {
-    this.props.actions.foo();
+    const { difficulty } = this.props.user;
+    this.props.dispatch(numbersActions.newGame(difficulty));
   }
 
   render() {
