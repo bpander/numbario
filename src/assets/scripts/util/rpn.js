@@ -1,10 +1,12 @@
+import { deleteAt } from 'util/arrays';
+
 /* Utility functions for dealing with Reverse Polish Notation (or RPN) */
 
 const OPERAND = '0';
 const OPERATOR = '1';
 const operators = [ '+', '-', '*', '/' ];
 
-const rpnCombinations = length => {
+export const getRpnCombinations = length => {
   const combos = [];
   const recurse = (n, operandQueue = n, operatorQueue = -1, combo = '') => {
     if (operandQueue <= 0 && operatorQueue <= 0) {
@@ -32,10 +34,11 @@ const solve = (n1, n2, operator) => {
   throw new Error(`Unrecognized operator: ${operator}.`);
 };
 
-const solveRpn = (sequence = [], isSuccessful = n => {}) => {
+const solveRpn = (sequence = [], isSuccessful = () => {}) => {
   const stack = [];
   const steps = [];
-  let success = false;
+  let success;
+  let solution;
   for (let i = 0; i < sequence.length; i++) {
     const token = sequence[i];
     if (typeof token === 'number') {
@@ -44,13 +47,58 @@ const solveRpn = (sequence = [], isSuccessful = n => {}) => {
     }
     const n1 = stack.pop();
     const n2 = stack.pop();
-    const result = solve(n1, n2, token);
+    solution = solve(n1, n2, token);
+    success = isSuccessful(solution);
+
+    const isConclusive = success === true || success === false;
     steps.push([ n1, token, n2 ]);
-    if (isSuccessful(result)) {
-      success = true;
+    if (isConclusive) {
       break;
     }
-    stack.push(result);
+    stack.push(solution);
   }
-  return { success, steps };
+  return { solution, success, steps };
 };
+
+const findSolution = (numbers, isSuccessful, rpnMasks) => {
+  let result;
+
+  const recurse = (numbersSlice, mask, stack = []) => {
+    if (!mask.length) {
+      result = solveRpn(stack, isSuccessful);
+      return result.success;
+    }
+    const runningNumbers = [ ...numbersSlice ];
+    for (let i = 0; i < mask.length; i++) {
+      const token = mask[i];
+      if (token === OPERAND) {
+        stack.push(runningNumbers.shift());
+      } else if (token === OPERATOR) {
+        return operators.some(operator => {
+          return recurse(runningNumbers, mask.slice(i + 1), stack.concat(operator));
+        });
+      }
+    }
+  };
+
+  rpnMasks.some(mask => recurse(numbers, mask));
+  return result;
+};
+
+export const createSolver = rpnMasks => (list, isSuccessful) => {
+  let result;
+  const listSorted = [ ...list ].sort((a, b) => a - b);
+  const recurse = (listSlice, n, combo = []) => {
+    if (!listSlice.length) {
+      result = findSolution(combo, isSuccessful, rpnMasks);
+      return result.success;
+    }
+    return listSlice.some((currentDigit, i) => {
+      const newList = deleteAt(listSlice, i);
+      return recurse(newList, currentDigit, combo.concat(currentDigit));
+    });
+  };
+  recurse(listSorted);
+  return result;
+};
+

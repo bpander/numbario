@@ -1,6 +1,7 @@
+import { Difficulty } from 'config';
 
 const initialState = {
-  difficulty: 'easy',
+  difficulty: Difficulty.EASY,
   streak: 0,
   bests: [],
   isFirstTime: true,
