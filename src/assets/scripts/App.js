@@ -11,7 +11,7 @@ export default class App extends Component {
     super(props);
 
     this.state = {
-      route: Route.SPLASH,
+      route: Route.MAIN_GAME,
       transitionProgress: 0,
     };
   }

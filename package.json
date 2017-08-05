@@ -21,7 +21,8 @@
     "inferno-component": "^3.0.6",
     "inferno-redux": "3.0.6",
     "redux": "^3.6.0",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "reselect": "^3.0.1"
   },
   "devDependencies": {
     "babel-plugin-inferno": "^3.2.0",

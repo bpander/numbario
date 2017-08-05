@@ -2,7 +2,7 @@ import Inferno from 'inferno';
 import Component from 'inferno-component';
 import { connect } from 'inferno-redux';
 import * as numbersActions from 'actions/numbersActions';
-import { Route } from 'config';
+import { getLeaves } from 'reducers/numbersReducer';
 
 
 @connect((state, ownProps) => ({ ...state, ...ownProps }))
@@ -13,14 +13,37 @@ export default class GameContainer extends Component {
     this.props.dispatch(numbersActions.newGame(user.difficulty));
   }
 
-  onClick = () => {
-    this.props.push(Route.SPLASH);
+  makeOnTokenClick = index => () => {
+    this.props.dispatch(numbersActions.streamPush(index));
   };
 
   render() {
+    const { numbers } = this.props;
+    const leaves = getLeaves(this.props.numbers);
     return (
-      <div>
-        <button onClick={this.onClick}>Back</button>
+      <div style={{ textAlign: 'center' }}>
+        <div>
+          {numbers.target}
+        </div>
+        <div>
+          {[ '+', '-', '*', '/' ].map(operator => (
+            <button onClick={this.makeOnTokenClick(operator)}>
+              {operator}
+            </button>
+          ))}
+        </div>
+        <div>
+          {leaves.map((n, i) => {
+            if (numbers.stream.includes(i)) {
+              return null;
+            }
+            return (
+              <button onClick={this.makeOnTokenClick(i)}>
+                {n}
+              </button>
+            );
+          })}
+        </div>
       </div>
     );
   }

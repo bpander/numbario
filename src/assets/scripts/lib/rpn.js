@@ -24,7 +24,7 @@ export const getRpnCombinations = length => {
   return combos;
 };
 
-const solve = (n1, n2, operator) => {
+export const solve = (n1, n2, operator) => {
   switch (operator) {
     case '+': return n1 + n2;
     case '-': return n1 - n2;

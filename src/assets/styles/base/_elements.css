@@ -2,7 +2,8 @@
  Elements Styles
 ------------------------------------------------------------------------ */
 
-body {
+body,
+button {
   font-family: var(--font-family);
   font-size: var(--base-font-size);
 }

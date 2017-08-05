@@ -1,8 +1,10 @@
+import { createSelector } from 'reselect';
 import * as actions from 'actions/numbersActions';
 import { Difficulty } from 'config';
 import { shuffle, times } from 'util/arrays';
 import { randomInt } from 'util/numbers';
-import { createSolver, getRpnCombinations } from 'util/rpn';
+import { evaluateStream } from 'lib/streams';
+import { createSolver, getRpnCombinations } from 'lib/rpn';
 
 const initialState = {
   inventory: [],
@@ -30,6 +32,9 @@ export default function numbersReducer(state = initialState, { type, payload } =
         stream: [],
       };
     }
+
+    case actions.STREAM_PUSH:
+      return { ...state, stream: state.stream.concat(payload.token) };
   }
   return state;
 }
@@ -62,3 +67,11 @@ const getValidator = target => n => {
     return true;
   }
 };
+
+export const getLeaves = createSelector([
+  state => state.stream,
+  state => state.inventory,
+], (
+  stream,
+  inventory,
+) => evaluateStream(stream, inventory));
