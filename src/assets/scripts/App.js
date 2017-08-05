@@ -1,22 +1,36 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
-import { connect } from 'inferno-redux';
 import * as numbersActions from 'actions/numbersActions';
+import GameContainer from 'containers/GameContainer';
+import SplashContainer from 'containers/SplashContainer';
+import { Route } from 'config';
 
 
-@connect(state => state)
 export default class App extends Component {
 
-  componentDidMount() {
-    const { difficulty } = this.props.user;
-    this.props.dispatch(numbersActions.newGame(difficulty));
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      route: Route.SPLASH,
+      transitionProgress: 0,
+    };
   }
 
+  onPush = (route) => {
+    this.setState({ route });
+  };
+
   render() {
-    const { didFoo } = this.props;
-    return (
-      <div>
-      </div>
-    );
+    switch (this.state.route) {
+      case Route.SPLASH:
+        return <SplashContainer push={this.onPush} />;
+
+      case Route.MAIN_GAME:
+        return <GameContainer push={this.onPush} />;
+
+      case Route.INTERSTITIAL:
+        // return <InterstitialContainer />;
+    }
   }
 };
