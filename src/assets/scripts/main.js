@@ -1,12 +1,10 @@
 import 'babel-polyfill';
 import Inferno from 'inferno';
 import { Provider } from 'inferno-redux';
-import { applyMiddleware, createStore } from 'redux';
-import thunkMiddleware from 'redux-thunk';
 import App from 'App';
-import reducer from 'reducers/reducer';
+import configureStore from 'configureStore';
 
-const store = createStore(reducer, applyMiddleware(thunkMiddleware));
+const store = configureStore();
 const node = document.getElementById('js-app');
 node.innerHTML = '';
 

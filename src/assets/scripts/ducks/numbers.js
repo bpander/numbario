@@ -1,11 +1,15 @@
 import { createSelector } from 'reselect';
-import * as actions from 'actions/numbersActions';
 import { Difficulty } from 'config';
 import { shuffle, times } from 'util/arrays';
 import { randomInt } from 'util/numbers';
 import * as streams from 'lib/streams';
 import { createSolver, getRpnCombinations } from 'lib/rpn';
 
+// Actions
+const NEW_GAME = 'numbers/NEW_GAME';
+const STREAM_PUSH = 'numbers/STREAM_PUSH';
+
+// Reducer
 const initialState = {
   inventory: [],
   stream: [],
@@ -16,7 +20,7 @@ const rpnMasks = getRpnCombinations(6);
 
 export default function numbersReducer(state = initialState, { type, payload } = {}) {
   switch (type) {
-    case actions.NEW_GAME: {
+    case NEW_GAME: {
       const solve = createSolver(shuffle(rpnMasks));
       const isValid = getValidator(randomInt(...getTargetRange(payload.difficulty)));
       let result = { success: false };
@@ -33,12 +37,13 @@ export default function numbersReducer(state = initialState, { type, payload } =
       };
     }
 
-    case actions.STREAM_PUSH:
+    case STREAM_PUSH:
       return { ...state, stream: state.stream.concat(payload.token) };
   }
   return state;
 }
 
+// Selectors
 const getNewNumbers = difficulty => {
   const smallSet = [ 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10 ];
   switch (difficulty) {
@@ -78,16 +83,17 @@ export const getLeaves = createSelector([
 
 export const isOperatorIndex = createSelector([
   state => state.stream,
-], (
-  stream,
-) => streams.getLocalIndex(stream, stream.length) === streams.OPERATOR_INDEX);
+], stream => streams.getLocalIndex(stream, stream.length) === streams.OPERATOR_INDEX);
 
 export const getOpenStream = createSelector([
   state => state.stream,
-], (
-  stream,
-) => {
+], stream => {
   const numOperations = Math.trunc(stream.length / streams.BIT_DEPTH);
   const lastClosedIndex = streams.BIT_DEPTH * numOperations;
   return stream.slice(lastClosedIndex);
 });
+
+// Action Creators
+export const newGame = difficulty => ({ type: NEW_GAME, payload: { difficulty } });
+
+export const streamPush = token => ({ type: STREAM_PUSH, payload: { token } });

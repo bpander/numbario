@@ -1,6 +1,9 @@
 import { Difficulty } from 'config';
-import * as userActions from 'actions/userActions';
 
+// Actions
+const UPDATE_USER = 'user/UPDATE_USER';
+
+// Reducer
 const initialState = {
   difficulty: Difficulty.EASY,
   streak: 0,
@@ -10,7 +13,7 @@ const initialState = {
 
 export default function userReducer(state = initialState, { type, payload } = {}) {
   switch (type) {
-    case userActions.UPDATE_USER: {
+    case UPDATE_USER: {
       const sanitizedUpdates = {};
       Object.keys(payload)
         .filter(key => state.hasOwnProperty(key))
@@ -21,3 +24,6 @@ export default function userReducer(state = initialState, { type, payload } = {}
   }
   return state;
 }
+
+// Action Creators
+export const updateUser = updates => ({ type: UPDATE_USER, payload: updates });
