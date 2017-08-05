@@ -12,15 +12,15 @@ const initialState = {
 
 const rpnMasks = getRpnCombinations(6);
 
-export default function numbersReducer(state = initialState, action = {}) {
-  switch (action.type) {
+export default function numbersReducer(state = initialState, { type, payload } = {}) {
+  switch (type) {
     case actions.NEW_GAME: {
       const solve = createSolver(shuffle(rpnMasks));
-      const isValid = getValidator(randomInt(...getTargetRange(action.difficulty)));
+      const isValid = getValidator(randomInt(...getTargetRange(payload.difficulty)));
       let result = { success: false };
       let inventory;
       while (!result.success) {
-        inventory = getNewNumbers(action.difficulty);
+        inventory = getNewNumbers(payload.difficulty);
         result = solve(inventory, isValid);
       }
       return {

@@ -1,6 +1,5 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
-import * as numbersActions from 'actions/numbersActions';
 import GameContainer from 'containers/GameContainer';
 import SplashContainer from 'containers/SplashContainer';
 import { Route } from 'config';
@@ -17,17 +16,15 @@ export default class App extends Component {
     };
   }
 
-  onPush = (route) => {
-    this.setState({ route });
-  };
+  push = route => this.setState({ route });
 
   render() {
     switch (this.state.route) {
       case Route.SPLASH:
-        return <SplashContainer push={this.onPush} />;
+        return <SplashContainer push={this.push} />;
 
       case Route.MAIN_GAME:
-        return <GameContainer push={this.onPush} />;
+        return <GameContainer push={this.push} />;
 
       case Route.INTERSTITIAL:
         // return <InterstitialContainer />;
