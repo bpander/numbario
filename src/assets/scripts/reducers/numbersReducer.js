@@ -3,7 +3,7 @@ import * as actions from 'actions/numbersActions';
 import { Difficulty } from 'config';
 import { shuffle, times } from 'util/arrays';
 import { randomInt } from 'util/numbers';
-import { evaluateStream } from 'lib/streams';
+import * as streams from 'lib/streams';
 import { createSolver, getRpnCombinations } from 'lib/rpn';
 
 const initialState = {
@@ -74,4 +74,10 @@ export const getLeaves = createSelector([
 ], (
   stream,
   inventory,
-) => evaluateStream(stream, inventory));
+) => streams.evaluateStream(stream, inventory));
+
+export const isOperatorIndex = createSelector([
+  state => state.stream,
+], (
+  stream,
+) => streams.getLocalIndex(stream, stream.length) === streams.OPERATOR_INDEX);

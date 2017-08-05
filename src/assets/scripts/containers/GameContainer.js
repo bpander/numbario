@@ -2,7 +2,7 @@ import Inferno from 'inferno';
 import Component from 'inferno-component';
 import { connect } from 'inferno-redux';
 import * as numbersActions from 'actions/numbersActions';
-import { getLeaves } from 'reducers/numbersReducer';
+import { getLeaves, isOperatorIndex } from 'reducers/numbersReducer';
 
 
 @connect((state, ownProps) => ({ ...state, ...ownProps }))
@@ -27,7 +27,10 @@ export default class GameContainer extends Component {
         </div>
         <div>
           {[ '+', '-', '*', '/' ].map(operator => (
-            <button onClick={this.makeOnTokenClick(operator)}>
+            <button
+              disabled={!isOperatorIndex(this.props.numbers)}
+              onClick={this.makeOnTokenClick(operator)}
+            >
               {operator}
             </button>
           ))}
@@ -38,7 +41,10 @@ export default class GameContainer extends Component {
               return null;
             }
             return (
-              <button onClick={this.makeOnTokenClick(i)}>
+              <button
+                disabled={isOperatorIndex(this.props.numbers)}
+                onClick={this.makeOnTokenClick(i)}
+              >
                 {n}
               </button>
             );
