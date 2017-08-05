@@ -7,15 +7,25 @@ export const ADDEND_INDEX = 2;
 export const BIT_DEPTH = 3;
 
 export const evaluateStream = (stream, inventory) => {
-  const leaves = [ ...inventory ];
+  const leaves = inventory.map((value, index) => ({
+    value,
+    index,
+    isUsed: false,
+  }));
   const numOperations = Math.trunc(stream.length / BIT_DEPTH);
 
   times(numOperations, i => {
     const start = i * BIT_DEPTH;
-    const augend = leaves[stream[start + AUGEND_INDEX]];
-    const addend = leaves[stream[start + ADDEND_INDEX]];
+    const augendLeaf = leaves[stream[start + AUGEND_INDEX]];
+    const addendLeaf = leaves[stream[start + ADDEND_INDEX]];
     const operator = stream[start + OPERATOR_INDEX];
-    leaves.push(solve(augend, addend, operator));
+    augendLeaf.isUsed = true;
+    addendLeaf.isUsed = true;
+    leaves.push({
+      value: solve(augendLeaf.value, addendLeaf.value, operator),
+      index: leaves.length,
+      isUsed: false,
+    });
   });
 
   return leaves;

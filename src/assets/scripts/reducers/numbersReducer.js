@@ -74,10 +74,20 @@ export const getLeaves = createSelector([
 ], (
   stream,
   inventory,
-) => streams.evaluateStream(stream, inventory));
+) => streams.evaluateStream(stream, inventory).filter(leaf => !leaf.isUsed));
 
 export const isOperatorIndex = createSelector([
   state => state.stream,
 ], (
   stream,
 ) => streams.getLocalIndex(stream, stream.length) === streams.OPERATOR_INDEX);
+
+export const getOpenStream = createSelector([
+  state => state.stream,
+], (
+  stream,
+) => {
+  const numOperations = Math.trunc(stream.length / streams.BIT_DEPTH);
+  const lastClosedIndex = streams.BIT_DEPTH * numOperations;
+  return stream.slice(lastClosedIndex);
+});
