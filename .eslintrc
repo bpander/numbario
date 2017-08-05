@@ -11,6 +11,8 @@
     "node": false
   },
   "globals": {
+    "Promise": true,
+    "Symbol": true,
     "module": true,
     "require": true,
     "define": true,
@@ -185,6 +187,7 @@
     "no-unused-vars": 2,                          # Disallow unused variables
     "inferno/jsx-uses-vars": 2,
     "inferno/jsx-uses-inferno": 2,
+    "inferno/jsx-no-undef": 2,
 
     ###############################################################################################
     # WHITESPACE <https://github.com/thenerdery/javascript-standards#whitespace>
