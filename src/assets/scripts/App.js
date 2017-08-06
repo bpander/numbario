@@ -1,6 +1,7 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
 import GameContainer from 'containers/GameContainer';
+import InterstitialContainer from 'containers/InterstitialContainer';
 import SplashContainer from 'containers/SplashContainer';
 import { Route } from 'config';
 
@@ -27,7 +28,7 @@ export default class App extends Component {
         return <GameContainer push={this.push} />;
 
       case Route.INTERSTITIAL:
-        // return <InterstitialContainer />;
+        return <InterstitialContainer push={this.push} />;
     }
   }
 };

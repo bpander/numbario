@@ -1,6 +1,7 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
 import { connect } from 'inferno-redux';
+import { Route } from 'config';
 import * as numbers from 'ducks/numbers';
 
 
@@ -10,6 +11,12 @@ export default class GameContainer extends Component {
   componentWillMount() {
     const { user } = this.props;
     this.props.dispatch(numbers.newGame(user.difficulty));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.numbers.didGiveUp) {
+      this.props.push(Route.INTERSTITIAL);
+    }
   }
 
   makeOnTokenClick = token => () => {
@@ -25,7 +32,7 @@ export default class GameContainer extends Component {
   };
 
   onGiveUp = () => {
-    console.log('give up');
+    this.props.dispatch(numbers.giveUp());
   };
 
   render() {
