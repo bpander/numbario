@@ -12,8 +12,20 @@ export default class GameContainer extends Component {
     this.props.dispatch(numbers.newGame(user.difficulty));
   }
 
-  makeOnTokenClick = index => () => {
-    this.props.dispatch(numbers.streamPush(index));
+  makeOnTokenClick = token => () => {
+    this.props.dispatch(numbers.streamPush(token));
+  };
+
+  onUndo = () => {
+    this.props.dispatch(numbers.streamPop());
+  };
+
+  onRefresh = () => {
+    this.props.dispatch(numbers.streamClear());
+  };
+
+  onGiveUp = () => {
+    console.log('give up');
   };
 
   render() {
@@ -51,6 +63,11 @@ export default class GameContainer extends Component {
               </button>
             );
           })}
+        </div>
+        <div>
+          <button onClick={this.onUndo}>undo</button>
+          <button onClick={this.onRefresh}>refresh</button>
+          <button onClick={this.onGiveUp}>give up</button>
         </div>
       </div>
     );

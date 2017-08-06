@@ -83,6 +83,14 @@ export const newGame = difficulty => dispatch => {
   }));
 };
 
+export const streamClear = () => dispatch => dispatch(update({ stream: [] }));
+
+export const streamPop = () => (dispatch, getState) => {
+  const { numbers } = getState();
+  const stream = numbers.stream.slice(0, -1);
+  return dispatch(update({ stream }));
+};
+
 export const streamPush = token => (dispatch, getState) => {
   const { numbers } = getState();
   const stream = [ ...numbers.stream, token ];
