@@ -14,6 +14,6 @@ const { reducer, update } = createSkinnyReducer('router/UPDATE', {
 });
 export default reducer;
 
-export const push = (route, leaveDuration = 0, enterDuration = 0) => dispatch => {
-  return dispatch(update({ route }));
+export const push = (route, leaveDuration = 0, enterDuration = 0) => {
+  return update({ route });
 };

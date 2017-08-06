@@ -99,7 +99,7 @@ const getValidator = target => n => {
 };
 
 // Action Creators
-export const newGame = difficulty => dispatch => {
+export const newGame = difficulty => {
   const solve = createSolver(shuffle(rpnMasks));
   const isValid = getValidator(randomInt(...getTargetRange(difficulty)));
   let result = { success: false };
@@ -108,13 +108,13 @@ export const newGame = difficulty => dispatch => {
     inventory = getNewNumbers(difficulty);
     result = solve(inventory, isValid);
   }
-  return dispatch(update({
+  return update({
     inventory,
     answer: result.steps,
     didGiveUp: false,
     target: result.solution,
     stream: [],
-  }));
+  });
 };
 
 export const giveUp = () => update({ didGiveUp: true });
