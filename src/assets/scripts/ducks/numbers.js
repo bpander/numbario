@@ -1,78 +1,20 @@
 import { createSelector } from 'reselect';
 import { Difficulty } from 'config';
-import { shuffle, times } from 'util/arrays';
-import { randomInt } from 'util/numbers';
-import * as streams from 'lib/streams';
+import { last, shuffle, times } from 'util/arrays';
+import { isWholeNumber, randomInt } from 'util/numbers';
+import createSkinnyReducer from 'lib/createSkinnyReducer';
 import { createSolver, getRpnCombinations } from 'lib/rpn';
+import * as streams from 'lib/streams';
 
-// Actions
-const NEW_GAME = 'numbers/NEW_GAME';
-const STREAM_PUSH = 'numbers/STREAM_PUSH';
 
-// Reducer
-const initialState = {
+const { reducer, update } = createSkinnyReducer('numbers/UPDATE', {
   inventory: [],
   stream: [],
   target: null,
-};
-
-const rpnMasks = getRpnCombinations(6);
-
-export default function numbersReducer(state = initialState, { type, payload } = {}) {
-  switch (type) {
-    case NEW_GAME: {
-      const solve = createSolver(shuffle(rpnMasks));
-      const isValid = getValidator(randomInt(...getTargetRange(payload.difficulty)));
-      let result = { success: false };
-      let inventory;
-      while (!result.success) {
-        inventory = getNewNumbers(payload.difficulty);
-        result = solve(inventory, isValid);
-      }
-      return {
-        ...state,
-        inventory,
-        target: result.solution,
-        stream: [],
-      };
-    }
-
-    case STREAM_PUSH:
-      return { ...state, stream: state.stream.concat(payload.token) };
-  }
-  return state;
-}
+});
+export default reducer;
 
 // Selectors
-const getNewNumbers = difficulty => {
-  const smallSet = [ 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10 ];
-  switch (difficulty) {
-    case Difficulty.EASY:
-      return [
-        10,
-        ...times(5, () => smallSet.splice(randomInt(0, smallSet.length - 1), 1)[0]),
-      ];
-  }
-  throw new Error(`Unrecognized difficulty: ${difficulty}.`);
-};
-
-const getTargetRange = difficulty => {
-  switch (difficulty) {
-    case Difficulty.EASY: return [ 11, 100 ];
-  }
-  throw new Error(`Unrecognized difficulty: ${difficulty}.`);
-};
-
-const getValidator = target => n => {
-  const isWholeNumber = n === Math.trunc(n);
-  if (!isWholeNumber) {
-    return false;
-  }
-  if (target === n) {
-    return true;
-  }
-};
-
 export const getLeaves = createSelector([
   state => state.stream,
   state => state.inventory,
@@ -93,7 +35,62 @@ export const getOpenStream = createSelector([
   return stream.slice(lastClosedIndex);
 });
 
-// Action Creators
-export const newGame = difficulty => ({ type: NEW_GAME, payload: { difficulty } });
+// Utility
+const rpnMasks = getRpnCombinations(6);
 
-export const streamPush = token => ({ type: STREAM_PUSH, payload: { token } });
+const getNewNumbers = difficulty => {
+  const smallSet = [ 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10 ];
+  switch (difficulty) {
+    case Difficulty.EASY:
+      return [
+        10,
+        ...times(5, () => smallSet.splice(randomInt(0, smallSet.length - 1), 1)[0]),
+      ];
+  }
+  throw new Error(`Unrecognized difficulty: ${difficulty}.`);
+};
+
+const getTargetRange = difficulty => {
+  switch (difficulty) {
+    case Difficulty.EASY: return [ 11, 100 ];
+  }
+  throw new Error(`Unrecognized difficulty: ${difficulty}.`);
+};
+
+const getValidator = target => n => {
+  if (!isWholeNumber(n)) {
+    return false;
+  }
+  if (target === n) {
+    return true;
+  }
+};
+
+// Action Creators
+export const newGame = difficulty => dispatch => {
+  const solve = createSolver(shuffle(rpnMasks));
+  const isValid = getValidator(randomInt(...getTargetRange(difficulty)));
+  let result = { success: false };
+  let inventory;
+  while (!result.success) {
+    inventory = getNewNumbers(difficulty);
+    result = solve(inventory, isValid);
+  }
+  return dispatch(update({
+    inventory,
+    target: result.solution,
+    stream: [],
+  }));
+};
+
+export const streamPush = token => (dispatch, getState) => {
+  const { numbers } = getState();
+  const stream = [ ...numbers.stream, token ];
+  const leaves = getLeaves({ ...numbers, stream });
+  const isValidStream = isWholeNumber(last(leaves).value);
+  if (!isValidStream) {
+    // TODO: Show not-whole-number error
+    return;
+  }
+  return dispatch(update({ stream }));
+};
