@@ -10,8 +10,10 @@ import { last } from 'util/arrays';
 export default class GameContainer extends Component {
 
   componentWillMount() {
-    const { user } = this.props;
-    this.props.dispatch(numbers.newGame(user.difficulty));
+    if (!this.props.numbers.inventory.length) {
+      const { user } = this.props;
+      this.props.dispatch(numbers.newGame(user.difficulty));
+    }
   }
 
   componentWillReceiveProps(nextProps) {

@@ -1,12 +1,12 @@
 
 export const Difficulty = {
-  EASY:   Symbol('EASY'),
-  NORMAL: Symbol('NORMAL'),
-  HARD:   Symbol('HARD'),
+  EASY:   'Difficulty/EASY',
+  NORMAL: 'Difficulty/NORMAL',
+  HARD:   'Difficulty/HARD',
 };
 
 export const Route = {
-  SPLASH: Symbol('SPLASH'),
-  MAIN_GAME: Symbol('MAIN_GAME'),
-  INTERSTITIAL: Symbol('INTERSTITIAL'),
+  SPLASH: 'Route/SPLASH',
+  MAIN_GAME: 'Route/MAIN_GAME',
+  INTERSTITIAL: 'Route/INTERSTITIAL',
 };
