@@ -3,6 +3,7 @@ import Component from 'inferno-component';
 import { connect } from 'inferno-redux';
 import { Route } from 'config';
 import * as numbers from 'ducks/numbers';
+import * as root from 'ducks/root';
 import * as router from 'ducks/router';
 import { last } from 'util/arrays';
 
@@ -12,15 +13,14 @@ export default class GameContainer extends Component {
   componentWillMount() {
     if (!this.props.numbers.inventory.length) {
       const { user } = this.props;
-      this.props.dispatch(numbers.newGame(user.difficulty));
+      this.props.dispatch(root.newGame(user.difficulty));
     }
   }
 
   componentWillReceiveProps(nextProps) {
     const leaves = numbers.getLeaves(nextProps.numbers);
     const wasSuccessful = last(leaves).value === nextProps.numbers.target;
-    const { didGiveUp } = nextProps.numbers;
-    if (wasSuccessful || didGiveUp) {
+    if (wasSuccessful) {
       this.props.dispatch(router.push(Route.INTERSTITIAL));
     }
   }
@@ -38,7 +38,7 @@ export default class GameContainer extends Component {
   };
 
   onGiveUp = () => {
-    this.props.dispatch(numbers.giveUp());
+    this.props.dispatch(root.giveUp());
   };
 
   render() {

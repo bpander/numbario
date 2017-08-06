@@ -23,6 +23,13 @@ export default class UIContainer extends Component {
           <option value={Difficulty.NORMAL}>Normal</option>
           <option value={Difficulty.HARD}>Hard</option>
         </select>
+        <dl>
+          <dt>Streak</dt>
+          <dd>{this.props.user.streak}</dd>
+
+          <td>Best</td>
+          <dd>{this.props.user.bests[this.props.user.difficulty]}</dd>
+        </dl>
       </div>
     );
   }

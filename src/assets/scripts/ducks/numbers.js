@@ -9,7 +9,6 @@ import * as streams from 'lib/streams';
 
 const { reducer, update } = createSkinnyReducer('numbers/UPDATE', {
   answer: [],
-  didGiveUp: false,
   inventory: [],
   stream: [],
   target: null,
@@ -111,13 +110,10 @@ export const newGame = difficulty => {
   return update({
     inventory,
     answer: result.steps,
-    didGiveUp: false,
     target: result.solution,
     stream: [],
   });
 };
-
-export const giveUp = () => update({ didGiveUp: true });
 
 export const streamClear = () => update({ stream: [] });
 
