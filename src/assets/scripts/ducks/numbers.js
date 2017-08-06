@@ -62,13 +62,29 @@ const getNewNumbers = difficulty => {
         10,
         ...times(5, () => smallSet.splice(randomInt(0, smallSet.length - 1), 1)[0]),
       ];
+
+    case Difficulty.NORMAL:
+      return [
+        50,
+        ...times(5, () => smallSet.splice(randomInt(0, smallSet.length - 1), 1)[0]),
+      ];
+
+    case Difficulty.HARD: {
+      const largeSet = [ 25, 50, 75, 100 ];
+      return [
+        ...times(2, () => largeSet.splice(randomInt(0, largeSet.length - 1), 1)[0]),
+        ...times(4, () => smallSet.splice(randomInt(0, smallSet.length - 1), 1)[0]),
+      ];
+    }
   }
   throw new Error(`Unrecognized difficulty: ${difficulty}.`);
 };
 
 const getTargetRange = difficulty => {
   switch (difficulty) {
-    case Difficulty.EASY: return [ 11, 100 ];
+    case Difficulty.EASY:   return [ 11,   99 ];
+    case Difficulty.NORMAL: return [ 101, 499 ];
+    case Difficulty.HARD:   return [ 101, 999 ];
   }
   throw new Error(`Unrecognized difficulty: ${difficulty}.`);
 };
