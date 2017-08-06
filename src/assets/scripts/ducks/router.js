@@ -8,7 +8,7 @@ export const Phase = {
 };
 
 const { reducer, update } = createSkinnyReducer('router/UPDATE', {
-  route: Route.SPLASH,
+  route: Route.MAIN_GAME,
   progress: 0,
   phase: Phase.ENTERED,
 });
