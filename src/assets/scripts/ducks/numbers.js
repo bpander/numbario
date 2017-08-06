@@ -99,9 +99,9 @@ export const newGame = difficulty => dispatch => {
   }));
 };
 
-export const giveUp = () => dispatch => dispatch(update({ didGiveUp: true }));
+export const giveUp = () => update({ didGiveUp: true });
 
-export const streamClear = () => dispatch => dispatch(update({ stream: [] }));
+export const streamClear = () => update({ stream: [] });
 
 export const streamPop = () => (dispatch, getState) => {
   const { numbers } = getState();
