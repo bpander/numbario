@@ -15,8 +15,16 @@ export default class InterstitialContainer extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ textAlign: 'center' }}>
         <button onClick={this.onClick}>New Game</button>
+        {(this.props.numbers.didGiveUp) && (
+          <div>
+            {this.props.numbers.answer.map(step => (
+              <div>{step.join(' ')}</div>
+            ))}
+            <div>{this.props.numbers.target}</div>
+          </div>
+        )}
       </div>
     );
   }
