@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { Difficulty } from 'config';
-import { last, shuffle, times } from 'util/arrays';
+import { chunk, last, shuffle, times } from 'util/arrays';
 import { isWholeNumber, randomInt } from 'util/numbers';
 import createSkinnyReducer from 'lib/createSkinnyReducer';
 import { createSolver, getRpnCombinations } from 'lib/rpn';
@@ -22,7 +22,7 @@ export const getLeaves = createSelector([
 ], (
   stream,
   inventory,
-) => streams.evaluateStream(stream, inventory).filter(leaf => !leaf.isUsed));
+) => streams.evaluateStream(stream, inventory));
 
 export const isOperatorIndex = createSelector([
   state => state.stream,
@@ -34,6 +34,20 @@ export const getOpenStream = createSelector([
   const numOperations = Math.trunc(stream.length / streams.BIT_DEPTH);
   const lastClosedIndex = streams.BIT_DEPTH * numOperations;
   return stream.slice(lastClosedIndex);
+});
+
+export const getSteps = createSelector([
+  state => state.stream,
+  getLeaves,
+], (
+  stream,
+  leaves,
+) => {
+  return chunk(stream, streams.BIT_DEPTH).map(ch => [
+    (leaves[ch[streams.AUGEND_INDEX]] || {}).value,
+    ch[streams.OPERATOR_INDEX],
+    (leaves[ch[streams.ADDEND_INDEX]] || {}).value,
+  ]);
 });
 
 // Utility

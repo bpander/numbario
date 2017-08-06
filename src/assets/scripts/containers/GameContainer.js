@@ -42,6 +42,8 @@ export default class GameContainer extends Component {
   render() {
     const leaves = numbers.getLeaves(this.props.numbers);
     const openStream = numbers.getOpenStream(this.props.numbers);
+    const steps = numbers.getSteps(this.props.numbers);
+
     return (
       <div style={{ textAlign: 'center' }}>
         <div>
@@ -62,7 +64,7 @@ export default class GameContainer extends Component {
           })}
         </div>
         <div>
-          {leaves.map(leaf => {
+          {leaves.filter(leaf => !leaf.isUsed).map(leaf => {
             const isActive = openStream.includes(leaf.index);
             return (
               <button
@@ -80,6 +82,11 @@ export default class GameContainer extends Component {
           <button onClick={this.onRefresh}>refresh</button>
           <button onClick={this.onGiveUp}>give up</button>
         </div>
+        <ul>
+          {steps.map(step => (
+            <li>{step}</li>
+          ))}
+        </ul>
       </div>
     );
   }

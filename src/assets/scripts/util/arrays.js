@@ -1,6 +1,13 @@
 
 const noop = () => {};
 
+export const chunk = (arr = [], size = 1) => {
+  return times(Math.ceil(arr.length / size), i => {
+    const start = i * size;
+    return arr.slice(start, start + size);
+  });
+};
+
 export const deleteAt = (arr = [], index, quantity = 1) => {
   const copy = [ ...arr ];
   copy.splice(index, quantity);
