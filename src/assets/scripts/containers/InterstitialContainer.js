@@ -3,14 +3,14 @@ import Component from 'inferno-component';
 import { connect } from 'inferno-redux';
 import { Route } from 'config';
 import * as numbers from 'ducks/numbers';
+import * as router from 'ducks/router';
 
-
-@connect((state, ownProps) => ({ ...state, ...ownProps }))
+@connect(state => state)
 export default class InterstitialContainer extends Component {
 
   onClick = () => {
     this.props.dispatch(numbers.newGame(this.props.user.difficulty));
-    this.props.push(Route.MAIN_GAME);
+    this.props.dispatch(router.push(Route.MAIN_GAME));
   };
 
   render() {

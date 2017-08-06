@@ -3,10 +3,12 @@ import persistState, { mergePersistedState } from 'redux-localstorage';
 import adapter from 'redux-localstorage/lib/adapters/localStorage';
 import thunk from 'redux-thunk';
 import numbers from 'ducks/numbers';
+import router from 'ducks/router';
 import user from 'ducks/user';
 
 const rootReducer = combineReducers({
   numbers,
+  router,
   user,
 });
 

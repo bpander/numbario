@@ -3,10 +3,10 @@ import Component from 'inferno-component';
 import { connect } from 'inferno-redux';
 import { Route } from 'config';
 import * as numbers from 'ducks/numbers';
+import * as router from 'ducks/router';
 import { last } from 'util/arrays';
 
-
-@connect((state, ownProps) => ({ ...state, ...ownProps }))
+@connect(state => state)
 export default class GameContainer extends Component {
 
   componentWillMount() {
@@ -21,7 +21,7 @@ export default class GameContainer extends Component {
     const wasSuccessful = last(leaves).value === nextProps.numbers.target;
     const { didGiveUp } = nextProps.numbers;
     if (wasSuccessful || didGiveUp) {
-      this.props.push(Route.INTERSTITIAL);
+      this.props.dispatch(router.push(Route.INTERSTITIAL));
     }
   }
 

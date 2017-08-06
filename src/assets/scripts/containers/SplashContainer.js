@@ -2,13 +2,13 @@ import Inferno from 'inferno';
 import Component from 'inferno-component';
 import { connect } from 'inferno-redux';
 import { Route } from 'config';
+import * as router from 'ducks/router';
 
-
-@connect((state, ownProps) => ({ ...state, ...ownProps }))
+@connect(state => state)
 export default class SplashContainer extends Component {
 
   onClick = () => {
-    this.props.push(Route.MAIN_GAME);
+    this.props.dispatch(router.push(Route.MAIN_GAME));
   };
 
   render() {

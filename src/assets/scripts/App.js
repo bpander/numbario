@@ -1,34 +1,23 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
+import { connect } from 'inferno-redux';
 import GameContainer from 'containers/GameContainer';
 import InterstitialContainer from 'containers/InterstitialContainer';
 import SplashContainer from 'containers/SplashContainer';
 import { Route } from 'config';
 
-
+@connect(state => state)
 export default class App extends Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      route: Route.MAIN_GAME,
-      transitionProgress: 0,
-    };
-  }
-
-  push = route => this.setState({ route });
-
   render() {
-    switch (this.state.route) {
+    switch (this.props.router.route) {
       case Route.SPLASH:
-        return <SplashContainer push={this.push} />;
+        return <SplashContainer />;
 
       case Route.MAIN_GAME:
-        return <GameContainer push={this.push} />;
+        return <GameContainer />;
 
       case Route.INTERSTITIAL:
-        return <InterstitialContainer push={this.push} />;
+        return <InterstitialContainer />;
     }
   }
 };
