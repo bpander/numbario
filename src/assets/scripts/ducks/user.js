@@ -1,7 +1,7 @@
 import { Difficulty } from 'config';
 import createSkinnyReducer from 'lib/createSkinnyReducer';
 
-const { reducer } = createSkinnyReducer('user/UPDATE', {
+const { reducer, update } = createSkinnyReducer('user/UPDATE', {
   difficulty: Difficulty.EASY,
   streak: 0,
   bests: {
@@ -12,3 +12,5 @@ const { reducer } = createSkinnyReducer('user/UPDATE', {
   isFirstTime: true,
 });
 export default reducer;
+
+export { update };
