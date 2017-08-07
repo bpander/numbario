@@ -1,9 +1,10 @@
 import { createSelector } from 'reselect';
 import { Difficulty } from 'config';
-import { chunk, last, shuffle, times } from 'util/arrays';
-import { isWholeNumber, randomInt } from 'util/numbers';
+import { chunk, last, times } from 'util/arrays';
+import { isBetween, isWholeNumber, randomInt } from 'util/numbers';
+import { configureCecil } from 'lib/cecil';
 import createSkinnyReducer from 'lib/createSkinnyReducer';
-import { createSolver, getRpnCombinations } from 'lib/rpn';
+import { solve } from 'lib/rpn';
 import * as streams from 'lib/streams';
 
 
@@ -51,26 +52,26 @@ export const getSteps = createSelector([
 });
 
 // Utility
-const rpnMasks = getRpnCombinations(6);
+const cecil = configureCecil(6);
 
-const getNewNumbers = difficulty => {
+const getNumbersGenerator = difficulty => {
   const smallSet = [ 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10 ];
   switch (difficulty) {
     case Difficulty.EASY:
-      return [
+      return () => [
         10,
         ...times(5, () => smallSet.splice(randomInt(0, smallSet.length - 1), 1)[0]),
       ];
 
     case Difficulty.NORMAL:
-      return [
+      return () => [
         50,
         ...times(5, () => smallSet.splice(randomInt(0, smallSet.length - 1), 1)[0]),
       ];
 
     case Difficulty.HARD: {
       const largeSet = [ 25, 50, 75, 100 ];
-      return [
+      return () => [
         ...times(2, () => largeSet.splice(randomInt(0, largeSet.length - 1), 1)[0]),
         ...times(4, () => smallSet.splice(randomInt(0, smallSet.length - 1), 1)[0]),
       ];
@@ -79,39 +80,31 @@ const getNewNumbers = difficulty => {
   throw new Error(`Unrecognized difficulty: ${difficulty}.`);
 };
 
-const getTargetRange = difficulty => {
-  switch (difficulty) {
-    case Difficulty.EASY:   return [ 11,   99 ];
-    case Difficulty.NORMAL: return [ 101, 499 ];
-    case Difficulty.HARD:   return [ 101, 999 ];
-  }
-  throw new Error(`Unrecognized difficulty: ${difficulty}.`);
-};
-
-const getValidator = target => n => {
-  if (!isWholeNumber(n)) {
+const getValidator = difficulty => result => {
+  const { solution, steps } = result;
+  const hasNonWholeNumber = steps.some(step => !isWholeNumber(solve(...step)));
+  if (hasNonWholeNumber) {
     return false;
   }
-  if (target === n) {
-    return true;
+  switch (difficulty) {
+    case Difficulty.EASY: return isBetween(solution, 11, 99);
+    case Difficulty.NORMAL: return isBetween(solution, 101, 499);
+    case Difficulty.HARD: return isBetween(solution, 101, 999);
   }
 };
 
 // Action Creators
 export const newGame = difficulty => {
-  const solve = createSolver(shuffle(rpnMasks));
-  const isValid = getValidator(randomInt(...getTargetRange(difficulty)));
-  let result = { success: false };
-  let inventory;
-  while (!result.success) {
-    inventory = getNewNumbers(difficulty);
-    result = solve(inventory, isValid);
-  }
+  const result = cecil({
+    numbersGenerator: getNumbersGenerator(difficulty),
+    validator: getValidator(difficulty),
+  });
+
   return update({
-    inventory,
-    answer: result.steps,
-    target: result.solution,
-    stream: [],
+    inventory:  result.numbers,
+    answer:     result.steps,
+    target:     result.solution,
+    stream:     [],
   });
 };
 

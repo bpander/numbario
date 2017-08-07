@@ -1,3 +1,4 @@
+import { randomInt } from 'util/numbers';
 
 const noop = () => {};
 
@@ -8,13 +9,9 @@ export const chunk = (arr = [], size = 1) => {
   });
 };
 
-export const deleteAt = (arr = [], index, quantity = 1) => {
-  const copy = [ ...arr ];
-  copy.splice(index, quantity);
-  return copy;
-};
-
 export const last = (arr = []) => arr[arr.length - 1];
+
+export const pickRandom = (arr = []) => arr[randomInt(0, arr.length - 1)];
 
 export const shuffle = arr => {
   const copy = [ ...arr ];
