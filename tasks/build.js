@@ -18,7 +18,8 @@ function clean() {
 export default function build(done) {
     return runSequence(
         'clean',
-        ['media', 'markup', 'styles', 'scripts', 'vendor'],
+        'markup',
+        ['media', 'icons', 'styles', 'scripts', 'vendor'],
         () => {
             process.env.watchStarted = true;
             done();

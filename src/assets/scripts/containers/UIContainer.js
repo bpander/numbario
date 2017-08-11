@@ -24,7 +24,12 @@ export default class UIContainer extends Component {
           <option value={Difficulty.HARD}>Hard</option>
         </select>
         <dl>
-          <dt>Streak</dt>
+          <dt>
+            <svg width="24" height="24">
+              <use xlink:href="#link" />
+            </svg>
+            Streak
+          </dt>
           <dd>{this.props.user.streak}</dd>
 
           <td>Best</td>
