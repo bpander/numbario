@@ -1,6 +1,7 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
 import { connect } from 'inferno-redux';
+import Transition from 'components/Transition';
 import GameContainer from 'containers/GameContainer';
 import InterstitialContainer from 'containers/InterstitialContainer';
 import SplashContainer from 'containers/SplashContainer';
@@ -33,11 +34,19 @@ export default class App extends Component {
   }
 
   render() {
+    const backgrounds = [
+      { key: this.props.layout.background, leaveTimeout: 2000 },
+    ];
     return (
       <div className="atmosphere">
-        <div className="atmosphere__type" style={`
-          background: linear-gradient(135deg, #FBB03B, #C1555F);
-        `}></div>
+        <Transition items={backgrounds} children={items => items.map(item => (
+          <div key={item.key} className="atmosphere__type" style={{
+            background: item.key,
+            opacity: (item.state === Transition.ENTERING) ? 0 : 1,
+            zIndex: (item.state === Transition.LEAVING) ? -2 : -1,
+            transition: `opacity ${item.leaveTimeout}ms`,
+          }}></div>
+        ))} />
         <div>
           {this.renderContent()}
         </div>

@@ -1,8 +1,11 @@
 import { batchActions } from 'redux-batched-actions';
 import { Route } from 'config';
+import * as layout from 'ducks/layout';
 import * as numbers from 'ducks/numbers';
 import * as router from 'ducks/router';
 import * as user from 'ducks/user';
+
+const noop = x => x;
 
 export const giveUp = () => batchActions([
   router.push(Route.INTERSTITIAL),
@@ -12,6 +15,7 @@ export const giveUp = () => batchActions([
 export const newGame = () => (dispatch, getState) => {
   const { difficulty } = getState().user;
   return dispatch(batchActions([
+    layout.updateBackground()(noop, getState),
     numbers.newGame(difficulty),
     user.update({ didGiveUp: false, streak: 0 }),
     router.push(Route.MAIN_GAME),
@@ -21,8 +25,9 @@ export const newGame = () => (dispatch, getState) => {
 export const newRound = () => (dispatch, getState) => {
   const { difficulty } = getState().user;
   return dispatch(batchActions([
+    layout.updateBackground()(noop, getState),
     numbers.newGame(difficulty),
-    user.incrementStreak()(x => x, getState),
+    user.incrementStreak()(noop, getState),
     router.push(Route.MAIN_GAME),
   ]));
 };
