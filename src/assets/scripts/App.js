@@ -10,6 +10,18 @@ import { Route } from 'config';
 @connect(state => state)
 export default class App extends Component {
 
+  renderContent() {
+    if (this.props.router.route === Route.SPLASH) {
+      return <SplashContainer />;
+    }
+    return (
+      <div>
+        <UIContainer />
+        {this.renderGame()}
+      </div>
+    );
+  }
+
   renderGame() {
     switch (this.props.router.route) {
       case Route.MAIN_GAME:
@@ -21,13 +33,14 @@ export default class App extends Component {
   }
 
   render() {
-    if (this.props.router.route === Route.SPLASH) {
-      return <SplashContainer />;
-    }
     return (
-      <div>
-        <UIContainer />
-        {this.renderGame()}
+      <div className="atmosphere">
+        <div className="atmosphere__type" style={`
+          background: linear-gradient(135deg, #FBB03B, #C1555F);
+        `}></div>
+        <div>
+          {this.renderContent()}
+        </div>
       </div>
     );
   }
