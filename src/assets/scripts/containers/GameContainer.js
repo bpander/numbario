@@ -1,10 +1,8 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
 import { connect } from 'inferno-redux';
-import { Route } from 'config';
 import * as numbers from 'ducks/numbers';
 import * as root from 'ducks/root';
-import * as router from 'ducks/router';
 import { last } from 'util/arrays';
 
 @connect(state => state)
@@ -21,7 +19,7 @@ export default class GameContainer extends Component {
     const leaves = numbers.getLeaves(nextProps.numbers);
     const wasSuccessful = last(leaves).value === nextProps.numbers.target;
     if (wasSuccessful) {
-      this.props.dispatch(router.push(Route.INTERSTITIAL));
+      // TODO: Show success modal here
     }
   }
 

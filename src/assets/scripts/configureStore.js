@@ -6,13 +6,11 @@ import filter from 'redux-localstorage-filter';
 import thunk from 'redux-thunk';
 import layout from 'ducks/layout';
 import numbers from 'ducks/numbers';
-import router from 'ducks/router';
 import user from 'ducks/user';
 
 const rootReducer = enableBatching(combineReducers({
   layout,
   numbers,
-  router,
   user,
 }));
 

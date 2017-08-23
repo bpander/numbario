@@ -5,9 +5,6 @@
 @import "base/_reset";
 @import "base/_elements";
 
-/* Landmarks */
-@import "landmarks/_atmosphere";
-
 /* Layout */
 @import "layout/_container";
 
