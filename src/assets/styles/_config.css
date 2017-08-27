@@ -2,4 +2,9 @@
 :root {
   --base-font-size: 16px;
   --font-family: 'Source Sans Pro', sans-serif;
+  --color-primary: #4A7CB2;
+  --color-secondary: #35587C;
+  --color-accent: #FF8076;
+  --color-neutral-15: #EEEEEE;
+  --color-neutral-16: #FFFFFF;
 }
