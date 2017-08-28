@@ -9,6 +9,7 @@
 @import "layout/_container";
 
 /* Components */
+@import "components/_gauge";
 @import "components/_masthead";
 @import "components/_typ";
 

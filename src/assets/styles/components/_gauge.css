@@ -1,0 +1,24 @@
+
+.gauge {
+  position: relative;
+}
+
+.gauge__band {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  background: var(--color-secondary);
+  box-shadow: var(--shadow-normal);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.gauge__face {
+  position: relative;
+  transform: translateY(var(--space-3x));
+  width: 75px;
+  height: 75px;
+  background: var(--color-neutral-15-16);
+  border-radius: 50%;
+  box-shadow: var(--shadow-normal);
+}

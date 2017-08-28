@@ -14,4 +14,5 @@
   max-height: 960px;
   height: 100%;
   position: relative;
+  background: var(--color-neutral-15-16);
 }

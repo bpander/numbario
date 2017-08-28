@@ -2,6 +2,7 @@ import Inferno from 'inferno';
 import Component from 'inferno-component';
 import { connect } from 'inferno-redux';
 import { Difficulty } from 'config';
+import Gauge from 'components/Gauge';
 import * as root from 'ducks/root';
 
 @connect(state => state)
@@ -22,6 +23,9 @@ export default class UIContainer extends Component {
           <div className="masthead__branding">
             <span className="typ typ--secondary typ--1.5x">le nombre</span>
           </div>
+        </div>
+        <div style={{ position: 'absolute', top: 0, right: 8 }}>
+          <Gauge />
         </div>
         <select value={this.props.user.difficulty} onChange={this.onDifficultyChange}>
           <option value={Difficulty.EASY}>Easy</option>
