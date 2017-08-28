@@ -24,6 +24,13 @@ export default class UIContainer extends Component {
             <span className="typ typ--secondary typ--1.5x">le nombre</span>
           </div>
         </div>
+        <div className="main">
+          <div className="main__inner">
+            <div className="main__content">
+              <span className="typ typ--12x typ--neutral-16 typ--shadow-thin">32</span>
+            </div>
+          </div>
+        </div>
         <div style={{ position: 'absolute', top: 0, right: 8 }}>
           <Gauge />
         </div>

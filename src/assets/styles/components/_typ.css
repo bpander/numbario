@@ -7,6 +7,10 @@
 
 .typ--primary { color: var(--color-primary); }
 .typ--secondary { color: var(--color-secondary); }
+.typ--neutral-16 { color: var(--color-neutral-16-16); }
 
 .typ--1x { font-size: var(--base-font-size); }
 .typ--1\.5x { font-size: calc(1.5 * var(--base-font-size)); }
+.typ--12x { font-size: calc(12 * var(--base-font-size)); }
+
+.typ--shadow-thin { text-shadow: var(--shadow-thin); }
