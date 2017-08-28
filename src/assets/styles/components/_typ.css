@@ -1,0 +1,12 @@
+
+.typ {
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-weight: var(--weight-semibold);
+}
+
+.typ--primary { color: var(--color-primary); }
+.typ--secondary { color: var(--color-secondary); }
+
+.typ--1x { font-size: var(--base-font-size); }
+.typ--1\.5x { font-size: calc(1.5 * var(--base-font-size)); }

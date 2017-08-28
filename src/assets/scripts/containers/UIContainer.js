@@ -18,6 +18,11 @@ export default class UIContainer extends Component {
   render() {
     return (
       <div>
+        <div className="masthead">
+          <div className="masthead__branding">
+            <span className="typ typ--secondary typ--1.5x">le nombre</span>
+          </div>
+        </div>
         <select value={this.props.user.difficulty} onChange={this.onDifficultyChange}>
           <option value={Difficulty.EASY}>Easy</option>
           <option value={Difficulty.NORMAL}>Normal</option>

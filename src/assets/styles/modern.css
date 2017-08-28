@@ -8,6 +8,10 @@
 /* Layout */
 @import "layout/_container";
 
+/* Components */
+@import "components/_masthead";
+@import "components/_typ";
+
 /* TODO: Organize this
 /* http://a11yproject.com/posts/how-to-hide-content/ */
 .visually-hidden {

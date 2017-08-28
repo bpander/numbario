@@ -1,0 +1,8 @@
+
+.masthead {
+  background: var(--color-primary);
+}
+
+.masthead__branding {
+  padding: var(--space-4x) var(--space-3x) var(--space-3x);
+}
