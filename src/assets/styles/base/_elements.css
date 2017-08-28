@@ -2,6 +2,10 @@
  Elements Styles
 ------------------------------------------------------------------------ */
 
+html {
+  overflow: auto;
+}
+
 body,
 button {
   font-family: var(--font-family);

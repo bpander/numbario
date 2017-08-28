@@ -10,7 +10,6 @@
 .container-inner {
   flex: 1;
   min-height: 500px;
-  max-width: 540px;
   max-height: 960px;
   height: 100%;
   position: relative;
