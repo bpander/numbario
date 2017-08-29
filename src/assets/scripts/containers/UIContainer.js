@@ -8,6 +8,14 @@ import * as root from 'ducks/root';
 @connect(state => state)
 export default class UIContainer extends Component {
 
+  static getGaugePosition(difficulty) {
+    switch (difficulty) {
+      case Difficulty.NORMAL: return 2;
+      case Difficulty.HARD: return 3;
+      default: return 1;
+    }
+  }
+
   shouldComponentUpdate(nextProps) {
     return nextProps.user !== this.props.user;
   }
@@ -32,13 +40,15 @@ export default class UIContainer extends Component {
           </div>
         </div>
         <div style={{ position: 'absolute', top: 0, right: 8 }}>
-          <Gauge />
+          <Gauge position={UIContainer.getGaugePosition(this.props.user.difficulty)} />
         </div>
-        <select value={this.props.user.difficulty} onChange={this.onDifficultyChange}>
-          <option value={Difficulty.EASY}>Easy</option>
-          <option value={Difficulty.NORMAL}>Normal</option>
-          <option value={Difficulty.HARD}>Hard</option>
-        </select>
+        <div style={{ position: 'absolute' }}>
+          <select value={this.props.user.difficulty} onChange={this.onDifficultyChange}>
+            <option value={Difficulty.EASY}>Easy</option>
+            <option value={Difficulty.NORMAL}>Normal</option>
+            <option value={Difficulty.HARD}>Hard</option>
+          </select>
+        </div>
         <dl>
           <dt>
             <svg width="24" height="24">
