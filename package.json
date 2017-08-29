@@ -19,6 +19,7 @@
     "babel-polyfill": "6.9.1",
     "inferno": "^3.0.6",
     "inferno-component": "^3.0.6",
+    "inferno-motion": "^2.0.0",
     "inferno-redux": "3.0.6",
     "redux": "^3.6.0",
     "redux-batched-actions": "^0.1.6",
