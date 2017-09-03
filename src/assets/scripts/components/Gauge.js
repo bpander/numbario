@@ -6,6 +6,7 @@ import config from '_config.css';
 export default class Gauge extends Component {
 
   static defaultProps = {
+    onClick: () => {},
     position: 0,
   };
 
@@ -40,7 +41,7 @@ export default class Gauge extends Component {
     return (
       <div className="gauge">
         <div className="gauge__band" />
-        <div className="gauge__face">
+        <button className="gauge__face" onClick={this.props.onClick}>
           <svg viewBox={`0 0 ${this.outerRadius * 2} ${this.outerRadius * 2}`}>
             <circle fill={config['color-primary']} cx="23.4" cy="52.1" r="2"/>
             <circle fill={config['color-primary']} cx="51.9" cy="52.1" r="2"/>
@@ -89,7 +90,7 @@ export default class Gauge extends Component {
               }}
             </Motion>
           </svg>
-        </div>
+        </button>
       </div>
     );
   }

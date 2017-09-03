@@ -16,12 +16,14 @@ export default class UIContainer extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    return nextProps.user !== this.props.user;
-  }
-
-  onDifficultyChange = e => {
-    this.props.dispatch(root.setDifficulty(e.target.value));
+  onGaugeClick = () => {
+    let difficulty;
+    switch (this.props.user.difficulty) {
+      case Difficulty.EASY:   difficulty = Difficulty.NORMAL; break;
+      case Difficulty.NORMAL: difficulty = Difficulty.HARD; break;
+      case Difficulty.HARD:   difficulty = Difficulty.EASY; break;
+    }
+    this.props.dispatch(root.setDifficulty(difficulty));
   };
 
   render() {
@@ -35,19 +37,17 @@ export default class UIContainer extends Component {
         <div className="main">
           <div className="main__inner">
             <div className="main__content">
-              <span className="typ typ--12x typ--neutral-16 typ--shadow-thin">32</span>
+              <span className="typ typ--12x typ--neutral-16 typ--shadow-thin">
+                {this.props.numbers.target}
+              </span>
             </div>
           </div>
         </div>
         <div style={{ position: 'absolute', top: 0, right: 8 }}>
-          <Gauge position={UIContainer.getGaugePosition(this.props.user.difficulty)} />
-        </div>
-        <div style={{ position: 'absolute' }}>
-          <select value={this.props.user.difficulty} onChange={this.onDifficultyChange}>
-            <option value={Difficulty.EASY}>Easy</option>
-            <option value={Difficulty.NORMAL}>Normal</option>
-            <option value={Difficulty.HARD}>Hard</option>
-          </select>
+          <Gauge
+            onClick={this.onGaugeClick}
+            position={UIContainer.getGaugePosition(this.props.user.difficulty)}
+          />
         </div>
         <dl>
           <dt>

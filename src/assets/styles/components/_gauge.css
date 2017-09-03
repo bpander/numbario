@@ -18,7 +18,11 @@
   transform: translateY(var(--space-3x));
   width: 75px;
   height: 75px;
+  margin: 0;
+  padding: 0;
   background: var(--color-neutral-15-16);
+  border: none;
   border-radius: 50%;
   box-shadow: var(--shadow-normal);
+  cursor: pointer;
 }
