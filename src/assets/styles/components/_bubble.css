@@ -1,0 +1,11 @@
+
+.bubble {
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: var(--shadow-normal);
+  width: 64px;
+  height: 64px;
+}
