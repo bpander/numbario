@@ -1,0 +1,10 @@
+
+.svg {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+}
+
+.svg--bigger { width: 36px; height: 36px; }
+
+.svg--lightest { fill: var(--color-neutral-16-16); }

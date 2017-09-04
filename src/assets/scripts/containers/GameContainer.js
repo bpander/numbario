@@ -27,25 +27,13 @@ export default class GameContainer extends Component {
     this.props.dispatch(numbers.streamPush(token));
   };
 
-  onUndo = () => {
-    this.props.dispatch(numbers.streamPop());
-  };
-
-  onRefresh = () => {
-    this.props.dispatch(numbers.streamClear());
-  };
-
-  onGiveUp = () => {
-    this.props.dispatch(root.giveUp());
-  };
-
   render() {
     const leaves = numbers.getLeaves(this.props.numbers);
     const openStream = numbers.getOpenStream(this.props.numbers);
     const steps = numbers.getSteps(this.props.numbers);
 
     return (
-      <div style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: 'center', position: 'relative' }}>
         <div>
           {this.props.numbers.target}
         </div>
@@ -76,11 +64,6 @@ export default class GameContainer extends Component {
               </button>
             );
           })}
-        </div>
-        <div>
-          <button onClick={this.onUndo}>undo</button>
-          <button onClick={this.onRefresh}>refresh</button>
-          <button onClick={this.onGiveUp}>give up</button>
         </div>
         <ul>
           {steps.map(step => (
