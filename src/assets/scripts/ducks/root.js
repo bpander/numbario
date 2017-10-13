@@ -31,31 +31,54 @@ export const setDifficulty = difficulty => batchActions([
 ]);
 
 // Selectors
+const gutter = 10;
+const tileWidth = 40; // TODO: Make dynamic
+const getInitialWidth = createSelector([
+  state => state.numbers.inventory,
+], (
+  inventory,
+) => {
+  return tileWidth * inventory.length + gutter * (inventory.length - 1);
+});
+
 export const getTilePositions = createSelector([
   state => numbers.getLeaves(state.numbers),
   state => numbers.getOpenStream(state.numbers),
   state => state.numbers.stream,
   state => state.layout.viewportWidth,
+  getInitialWidth,
 ], (
   leaves,
   openStream,
   stream,
   viewportWidth,
+  initialWidth,
 ) => {
   const usableInventory = leaves.filter(l => !l.isUsed && !openStream.includes(l.index));
+  const step = (!openStream.length) ? [] : openStream;
+
+  let leftEdge = (viewportWidth - initialWidth) / 2;
+  let lastRightEdge = leftEdge;
+  const inventoryPositions = usableInventory.map(leaf => {
+    const x = lastRightEdge;
+    const y = 500;
+    lastRightEdge = lastRightEdge + tileWidth + gutter;
+    return { type: 'operand', data: leaf, x, y };
+  });
+  const stepWidth = step.length * tileWidth + (step.length - 1) * gutter;
+  leftEdge = (viewportWidth - stepWidth) / 2;
+  lastRightEdge = leftEdge;
+  const stepPositions = step.map(token => {
+    const x = lastRightEdge;
+    const y = 300;
+    lastRightEdge = lastRightEdge + tileWidth + gutter;
+    if (typeof token === 'string') {
+      return { type: 'operator', data: { value: token }, x, y };
+    }
+    return { type: 'operand', data: leaves[token], x, y };
+  });
   return [
-    ...usableInventory.map(leaf => {
-      const x = 0;
-      const y = 0;
-      return { type: 'operand', data: leaf, x, y };
-    }),
-    ...openStream.map(token => {
-      const x = 0;
-      const y = 0;
-      if (typeof token === 'string') {
-        return { type: 'operator', data: token, x, y };
-      }
-      return { type: 'operand', data: leaves[token], x, y };
-    }),
+    ...inventoryPositions,
+    ...stepPositions,
   ];
 });

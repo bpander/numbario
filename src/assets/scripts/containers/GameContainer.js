@@ -1,5 +1,6 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
+import { TransitionMotion, spring } from 'inferno-motion';
 import { connect } from 'inferno-redux';
 import * as numbers from 'ducks/numbers';
 import * as root from 'ducks/root';
@@ -35,11 +36,13 @@ export default class GameContainer extends Component {
     console.log({ tilePositions });
 
     return (
-      <div style={{ textAlign: 'center', position: 'relative' }}>
-        <div>
-          {this.props.numbers.target}
-        </div>
-        <div>
+      <div style={{ textAlign: 'center', position: 'absolute', top: 0, left: 0, width: '100%' }}>
+        <div style={{
+          position: 'absolute',
+          top: 450,
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }}>
           {[ '+', '-', '*', '/' ].map(operator => {
             const isActive = openStream.includes(operator);
             return (
@@ -53,25 +56,39 @@ export default class GameContainer extends Component {
             );
           })}
         </div>
-        <div>
-          {leaves.filter(leaf => !leaf.isUsed).map(leaf => {
-            const isActive = openStream.includes(leaf.index);
-            return (
-              <button
-                disabled={isActive || numbers.isOperatorIndex(this.props.numbers)}
-                onClick={this.makeOnTokenClick(leaf.index)}
-                style={(isActive) && { background: 'black' }}
-              >
-                {leaf.value}
-              </button>
-            );
-          })}
-        </div>
-        <ul>
-          {steps.map(step => (
-            <li>{step}</li>
-          ))}
-        </ul>
+        <TransitionMotion
+          styles={tilePositions.map(pos => ({
+            key: pos.data.index,
+            style: { x: spring(pos.x), y: spring(pos.y), scale: spring(1) },
+            data: pos.data,
+          }))}
+          willLeave={(leaving) => {
+            return { ...leaving.style, scale: spring(0) };
+          }}
+        >
+          {configs => (
+            <ul style={{ position: 'absolute', top: 0, left: 0 }}>
+              {configs.map(config => {
+                return (
+                  <li key={config.key} style={{
+                    position: 'absolute',
+                    transform: `
+                      translate3d(${config.style.x}px, ${config.style.y}px, 0)
+                      scale(${config.style.scale})
+                    `,
+                  }}>
+                    <button
+                      disabled={numbers.isOperatorIndex(this.props.numbers)}
+                      onClick={this.makeOnTokenClick(config.data.index)}
+                    >
+                      {config.data.value}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </TransitionMotion>
       </div>
     );
   }
