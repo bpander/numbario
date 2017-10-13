@@ -31,6 +31,8 @@ export default class GameContainer extends Component {
     const leaves = numbers.getLeaves(this.props.numbers);
     const openStream = numbers.getOpenStream(this.props.numbers);
     const steps = numbers.getSteps(this.props.numbers);
+    const tilePositions = root.getTilePositions(this.props);
+    console.log({ tilePositions });
 
     return (
       <div style={{ textAlign: 'center', position: 'relative' }}>
