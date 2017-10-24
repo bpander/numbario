@@ -14,3 +14,5 @@
 .typ--12x { font-size: calc(12 * var(--base-font-size)); }
 
 .typ--shadow-thin { text-shadow: var(--shadow-thin); }
+
+.typ--right { text-align: right; }

@@ -1,0 +1,13 @@
+
+.vList {
+  list-style: none;
+}
+
+.vList > * {
+  display: block;
+}
+
+.vList--1x > * + * { margin-top: var(--space-1x); }
+.vList--2x > * + * { margin-top: var(--space-2x); }
+.vList--3x > * + * { margin-top: var(--space-3x); }
+.vList--4x > * + * { margin-top: var(--space-4x); }

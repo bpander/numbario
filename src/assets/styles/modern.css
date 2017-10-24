@@ -8,6 +8,7 @@
 /* Layout */
 @import "layout/_container";
 @import "layout/_hList";
+@import "layout/_vList";
 
 /* Components */
 @import "components/_bubble";

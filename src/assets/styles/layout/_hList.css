@@ -4,6 +4,10 @@
   display: inline-flex;
 }
 
+.hList--centered {
+  align-items: center;
+}
+
 .hList--1x > * + * { margin-left: var(--space-1x); }
 .hList--2x > * + * { margin-left: var(--space-2x); }
 .hList--3x > * + * { margin-left: var(--space-3x); }

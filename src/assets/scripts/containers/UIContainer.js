@@ -49,18 +49,32 @@ export default class UIContainer extends Component {
             position={UIContainer.getGaugePosition(this.props.user.difficulty)}
           />
         </div>
-        <dl>
-          <dt>
-            <svg width="24" height="24">
-              <use xlink:href="#link" />
-            </svg>
-            Streak
-          </dt>
-          <dd>{this.props.user.streak}</dd>
-
-          <td>Best</td>
-          <dd>{this.props.user.bests[this.props.user.difficulty]}</dd>
-        </dl>
+        <div className="typ typ--right typ--secondary typ--1.5x" style={{ position: 'absolute', top: 94, right: 12 }}>
+          <ul className="vList vList--2x">
+            <li>
+              <dl className="hList hList--centered hList--2x">
+                <dd>{this.props.user.streak.toLocaleString()}</dd>
+                <dt>
+                  <svg style={{ display: 'block', fill: 'currentColor' }} width="32" height="32">
+                    <use xlink:href="#link" />
+                  </svg>
+                  <span className="visually-hidden">Streak</span>
+                </dt>
+              </dl>
+            </li>
+            <li>
+              <dl className="hList hList--centered hList--2x">
+                <dd>{this.props.user.bests[this.props.user.difficulty].toLocaleString()}</dd>
+                <dt>
+                  <svg style={{ display: 'block', fill: 'currentColor' }} width="32" height="32">
+                    <use xlink:href="#trophy" />
+                  </svg>
+                  <span className="visually-hidden">Best</span>
+                </dt>
+              </dl>
+            </li>
+          </ul>
+        </div>
       </div>
     );
   }
