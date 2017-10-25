@@ -37,9 +37,10 @@ export default class UIContainer extends Component {
         <div className="main">
           <div className="main__inner">
             <div className="main__content">
-              <span className="typ typ--12x typ--neutral-16 typ--shadow-thin">
+              <div className="typ typ--12x typ--neutral-16 typ--shadow-thin">
                 {this.props.numbers.target}
-              </span>
+              </div>
+              <div className="typ typ--1.5x typ--secondary">make this</div>
             </div>
           </div>
         </div>
