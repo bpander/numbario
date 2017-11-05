@@ -1,7 +1,6 @@
-import Inferno from 'inferno';
-import Component from 'inferno-component';
-import { TransitionMotion, spring } from 'inferno-motion';
-import { connect } from 'inferno-redux';
+import React, { Component } from 'react';
+import { TransitionMotion, spring } from 'react-motion';
+import { connect } from 'react-redux';
 import * as numbers from 'ducks/numbers';
 import * as root from 'ducks/root';
 import { last } from 'util/arrays';
@@ -47,9 +46,10 @@ export default class GameContainer extends Component {
             const isActive = openStream.includes(operator);
             return (
               <button
+                key={operator}
                 disabled={isActive || !numbers.isOperatorIndex(this.props.numbers)}
                 onClick={this.makeOnTokenClick(operator)}
-                style={(isActive) && { background: 'black' }}
+                style={(isActive) ? { background: 'black' } : null}
               >
                 {operator}
               </button>
@@ -58,11 +58,11 @@ export default class GameContainer extends Component {
         </div>
         <TransitionMotion
           styles={tilePositions.map(pos => ({
-            key: pos.data.index,
+            key: String(pos.data.index),
             style: { x: spring(pos.x), y: spring(pos.y), scale: spring(1) },
             data: pos.data,
           }))}
-          willLeave={(leaving) => {
+          willLeave={leaving => {
             return { ...leaving.style, scale: spring(0) };
           }}
         >

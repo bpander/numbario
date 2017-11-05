@@ -1,6 +1,5 @@
-import Inferno from 'inferno';
-import Component from 'inferno-component';
-import { Motion, presets, spring } from 'inferno-motion';
+import React, { Component } from 'react';
+import { Motion, presets, spring } from 'react-motion';
 import config from '_config.css';
 
 export default class Gauge extends Component {
@@ -50,7 +49,7 @@ export default class Gauge extends Component {
             <circle
               fill="none"
               stroke={config['color-neutral-12-16']}
-              stroke-width="5"
+              strokeWidth="5"
               cx={this.x}
               cy={this.y}
               r={this.innerRadius}
@@ -67,8 +66,8 @@ export default class Gauge extends Component {
                     <path
                       fill="none"
                       stroke={config['color-accent']}
-                      stroke-width="5"
-                      stroke-linecap="round"
+                      strokeWidth="5"
+                      strokeLinecap="round"
                       d={`
                         M ${this.arcStartPoint.join(' ')}
                         A ${rx} ${ry} 0 ${largeArcFlag} 1 ${arcEndPoint.join(' ')}

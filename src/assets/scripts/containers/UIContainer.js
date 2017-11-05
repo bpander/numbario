@@ -1,6 +1,5 @@
-import Inferno from 'inferno';
-import Component from 'inferno-component';
-import { connect } from 'inferno-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Difficulty } from 'config';
 import Gauge from 'components/Gauge';
 import * as root from 'ducks/root';
@@ -50,14 +49,18 @@ export default class UIContainer extends Component {
             position={UIContainer.getGaugePosition(this.props.user.difficulty)}
           />
         </div>
-        <div className="typ typ--right typ--secondary typ--1.5x" style={{ position: 'absolute', top: 94, right: 12 }}>
+        <div className="typ typ--right typ--secondary typ--1.5x" style={{
+          position: 'absolute',
+          top: 94,
+          right: 12,
+        }}>
           <ul className="vList vList--2x">
             <li>
               <dl className="hList hList--centered hList--2x">
                 <dd>{this.props.user.streak.toLocaleString()}</dd>
                 <dt>
                   <svg style={{ display: 'block', fill: 'currentColor' }} width="32" height="32">
-                    <use xlink:href="#link" />
+                    <use xlinkHref="#link" />
                   </svg>
                   <span className="visually-hidden">Streak</span>
                 </dt>
@@ -68,7 +71,7 @@ export default class UIContainer extends Component {
                 <dd>{this.props.user.bests[this.props.user.difficulty].toLocaleString()}</dd>
                 <dt>
                   <svg style={{ display: 'block', fill: 'currentColor' }} width="32" height="32">
-                    <use xlink:href="#trophy" />
+                    <use xlinkHref="#trophy" />
                   </svg>
                   <span className="visually-hidden">Best</span>
                 </dt>

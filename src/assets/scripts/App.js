@@ -1,5 +1,4 @@
-import Inferno from 'inferno';
-import Component from 'inferno-component';
+import React, { Component } from 'react';
 import FooterContainer from 'containers/FooterContainer';
 import GameContainer from 'containers/GameContainer';
 import UIContainer from 'containers/UIContainer';
