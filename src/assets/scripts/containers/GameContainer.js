@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
-import { TransitionMotion, spring } from 'react-motion';
+import { TransitionMotion, spring, stripStyle } from 'react-motion';
 import { connect } from 'react-redux';
+import { OPERATOR_INDEX } from 'lib/streams';
 import * as numbers from 'ducks/numbers';
 import * as root from 'ducks/root';
 import { last } from 'util/arrays';
 
 @connect(state => state)
 export default class GameContainer extends Component {
+
+  willEnter(entering) {
+    return { ...stripStyle(entering.style), scale: 0 };
+  }
+
+  willLeave(leaving) {
+    return { ...leaving.style, scale: spring(0) };
+  }
 
   componentWillMount() {
     if (!this.props.numbers.inventory.length) {
@@ -30,15 +39,45 @@ export default class GameContainer extends Component {
   render() {
     const leaves = numbers.getLeaves(this.props.numbers);
     const openStream = numbers.getOpenStream(this.props.numbers);
-    const steps = numbers.getSteps(this.props.numbers);
-    const tilePositions = root.getTilePositions(this.props);
-    console.log({ tilePositions });
+    const unusedLeaves = leaves.filter(l => !l.isUsed && !openStream.includes(l.index));
 
     return (
       <div style={{ textAlign: 'center', position: 'absolute', top: 0, left: 0, width: '100%' }}>
+        <TransitionMotion
+          styles={openStream.map((token, i) => ({
+            key: String(token),
+            data: token,
+            style: { scale: spring(1), x: spring(i * 30) },
+          }))}
+          defaultStyles={openStream.map((token, i) => ({
+            key: String(token),
+            data: token,
+            style: { scale: 0, x: i * 30 },
+          }))}
+          willEnter={this.willEnter}
+          willLeave={this.willLeave}
+        >
+          {configs => (
+            <ul style={{ position: 'absolute', top: 350 }}>
+              {configs.map((config, i) => (
+                <li key={config.key} style={{
+                  position: 'absolute',
+                  transform: `
+                    translate3d(${config.style.x}px, 0, 0)
+                    scale(${config.style.scale})
+                  `,
+                }}>
+                  <button>
+                    {(i === OPERATOR_INDEX) ? config.data : leaves[config.data].value}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </TransitionMotion>
         <div style={{
           position: 'absolute',
-          top: 450,
+          top: 400,
           left: '50%',
           transform: 'translateX(-50%)',
         }}>
@@ -49,7 +88,6 @@ export default class GameContainer extends Component {
                 key={operator}
                 disabled={isActive || !numbers.isOperatorIndex(this.props.numbers)}
                 onClick={this.makeOnTokenClick(operator)}
-                style={(isActive) ? { background: 'black' } : null}
               >
                 {operator}
               </button>
@@ -57,23 +95,27 @@ export default class GameContainer extends Component {
           })}
         </div>
         <TransitionMotion
-          styles={tilePositions.map(pos => ({
-            key: String(pos.data.index),
-            style: { x: spring(pos.x), y: spring(pos.y), scale: spring(1) },
-            data: pos.data,
+          styles={unusedLeaves.map((leaf, i) => ({
+            key: String(leaf.index),
+            style: { x: spring(i * 30), scale: spring(1) },
+            data: leaf,
           }))}
-          willLeave={leaving => {
-            return { ...leaving.style, scale: spring(0) };
-          }}
+          defaultStyles={unusedLeaves.map((leaf, i) => ({
+            key: String(leaf.index),
+            style: { x: i * 30, scale: 0 },
+            data: leaf,
+          }))}
+          willEnter={this.willEnter}
+          willLeave={this.willLeave}
         >
           {configs => (
-            <ul style={{ position: 'absolute', top: 0, left: 0 }}>
+            <ul style={{ position: 'absolute', top: 450, left: 0 }}>
               {configs.map(config => {
                 return (
                   <li key={config.key} style={{
                     position: 'absolute',
                     transform: `
-                      translate3d(${config.style.x}px, ${config.style.y}px, 0)
+                      translate3d(${config.style.x}px, 0, 0)
                       scale(${config.style.scale})
                     `,
                   }}>
