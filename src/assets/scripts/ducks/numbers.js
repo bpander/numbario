@@ -132,7 +132,7 @@ export const streamClear = () => update({ stream: [] });
 export const streamPop = () => (dispatch, getState) => {
   const { numbers } = getState();
   const stream = numbers.stream.slice(0, -1);
-  return dispatch(update({ stream }));
+  return dispatch(update({ stream, shouldSolveLastStep: true }));
 };
 
 export const streamPush = token => (dispatch, getState) => {
