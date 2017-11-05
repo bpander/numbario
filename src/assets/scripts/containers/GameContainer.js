@@ -46,12 +46,12 @@ export default class GameContainer extends Component {
         <TransitionMotion
           styles={openStream.map((token, i) => ({
             key: String(token),
-            data: token,
+            data: (i === OPERATOR_INDEX) ? token : leaves[token].value,
             style: { scale: spring(1), x: spring(i * 30) },
           }))}
           defaultStyles={openStream.map((token, i) => ({
             key: String(token),
-            data: token,
+            data: (i === OPERATOR_INDEX) ? token : leaves[token].value,
             style: { scale: 0, x: i * 30 },
           }))}
           willEnter={this.willEnter}
@@ -67,9 +67,7 @@ export default class GameContainer extends Component {
                     scale(${config.style.scale})
                   `,
                 }}>
-                  <button>
-                    {(i === OPERATOR_INDEX) ? config.data : leaves[config.data].value}
-                  </button>
+                  <span>{config.data}</span>
                 </li>
               ))}
             </ul>
