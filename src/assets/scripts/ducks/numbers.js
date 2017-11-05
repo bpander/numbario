@@ -13,6 +13,7 @@ const { reducer, update } = createSkinnyReducer('numbers/UPDATE', {
   inventory: [],
   stream: [],
   target: null,
+  shouldSolveLastStep: false,
 });
 export default reducer;
 
@@ -20,10 +21,20 @@ export default reducer;
 export const getLeaves = createSelector([
   state => state.stream,
   state => state.inventory,
+  state => state.shouldSolveLastStep,
 ], (
   stream,
   inventory,
-) => streams.evaluateStream(stream, inventory));
+  shouldSolveLastStep,
+) => {
+  let streamToSolve = stream;
+  if (!shouldSolveLastStep) {
+    const { BIT_DEPTH } = streams;
+    const lastSolvableIndex = Math.ceil((stream.length - BIT_DEPTH) / BIT_DEPTH) * BIT_DEPTH;
+    streamToSolve = stream.slice(0, lastSolvableIndex);
+  }
+  return streams.evaluateStream(streamToSolve, inventory);
+});
 
 export const isOperatorIndex = createSelector([
   state => state.stream,
@@ -31,10 +42,18 @@ export const isOperatorIndex = createSelector([
 
 export const getOpenStream = createSelector([
   state => state.stream,
-], stream => {
+  state => state.shouldSolveLastStep,
+], (
+  stream,
+  shouldSolveLastStep,
+) => {
   const numOperations = Math.trunc(stream.length / streams.BIT_DEPTH);
   const lastClosedIndex = streams.BIT_DEPTH * numOperations;
-  return stream.slice(lastClosedIndex);
+  let openStream = stream.slice(lastClosedIndex);
+  if (!openStream.length && !shouldSolveLastStep) {
+    openStream = stream.slice(streams.BIT_DEPTH * -1);
+  }
+  return openStream;
 });
 
 export const getSteps = createSelector([
@@ -125,5 +144,11 @@ export const streamPush = token => (dispatch, getState) => {
     // TODO: Show not-whole-number error
     return;
   }
-  return dispatch(update({ stream }));
+  const isStreamSolvable = stream.length > 0 && stream.length % streams.BIT_DEPTH === 0;
+  if (isStreamSolvable && !numbers.shouldSolveLastStep) {
+    setTimeout(() => {
+      dispatch(update({ shouldSolveLastStep: true }));
+    }, 400);
+  }
+  return dispatch(update({ stream, shouldSolveLastStep: false }));
 };
