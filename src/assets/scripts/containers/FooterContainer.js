@@ -15,21 +15,27 @@ export default class FooterContainer extends Component {
   };
 
   onGiveUp = () => {
-    this.props.dispatch(root.giveUp());
+    const wasSuccessful = numbers.wasSuccessful(this.props.numbers);
+    if (wasSuccessful) {
+      this.props.dispatch(root.newRound());
+    } else {
+      this.props.dispatch(root.giveUp());
+    }
   };
 
   render() {
+    const wasSuccessful = numbers.wasSuccessful(this.props.numbers);
     return (
       <ul className="hList hList--3x">
         <li>
-          <button className="bubble" onClick={this.onUndo}>
+          <button className="bubble" onClick={this.onUndo} disabled={wasSuccessful}>
             <svg className="svg svg--bigger svg--lightest">
               <use xlinkHref="#undo" />
             </svg>
           </button>
         </li>
         <li>
-          <button className="bubble" onClick={this.onRefresh}>
+          <button className="bubble" onClick={this.onRefresh} disabled={wasSuccessful}>
             <svg className="svg svg--bigger svg--lightest">
               <use xlinkHref="#refresh" />
             </svg>

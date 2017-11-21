@@ -44,21 +44,15 @@ export default class GameContainer extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const leaves = numbers.getLeaves(nextProps.numbers);
-    const wasSuccessful = last(leaves).value === nextProps.numbers.target;
-    if (wasSuccessful) {
-      // TODO: Show success modal here
-    }
-  }
-
   makeOnTokenClick = token => () => {
     this.props.dispatch(numbers.streamPush(token));
   };
 
   render() {
-    const leaves = numbers.getLeaves(this.props.numbers);
-    const openStream = numbers.getOpenStream(this.props.numbers);
+    const wasSuccessful = numbers.wasSuccessful(this.props.numbers);
+    const leaves = (wasSuccessful) ? [] : numbers.getLeaves(this.props.numbers);
+    const openStream =  (wasSuccessful) ? [] : numbers.getOpenStream(this.props.numbers);
+    const operators = (wasSuccessful) ? [] : [ '+', '-', '*', '/' ];
     const unusedLeaves = leaves.filter(l => !l.isUsed && !openStream.includes(l.index));
     const { viewportWidth } = this.props.layout;
     const stagingX = (viewportWidth - (openStream.length * 48 + (openStream.length - 1) * 6)) / 2;
@@ -94,6 +88,7 @@ export default class GameContainer extends Component {
                     translate3d(${config.style.x}px, 0, 0)
                     scale(${config.style.scale})
                   `,
+                  opacity: config.style.scale,
                 }}>
                   <div className="tile">
                     {(i === OPERATOR_INDEX) ? (
@@ -111,31 +106,47 @@ export default class GameContainer extends Component {
             </ul>
           )}
         </TransitionMotion>
-        <ul className="hList hList--3x" style={{
-          position: 'absolute',
-          top: 390,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          whiteSpace: 'nowrap',
-        }}>
-          {[ '+', '-', '*', '/' ].map(operator => {
-            const isActive = openStream.includes(operator);
-            return (
-              <li key={operator}>
-                <div className="tile tile--stack" />
-                <button
-                  className="tile"
-                  disabled={isActive || !numbers.isOperatorIndex(this.props.numbers)}
-                  onClick={this.makeOnTokenClick(operator)}
-                >
-                  <svg className="svg svg--smaller">
-                    <use xlinkHref={operatorMap[operator]} />
-                  </svg>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
+        <TransitionMotion
+          styles={operators.map(operator => ({
+            key: operator,
+            data: { operator },
+            style: { scale: spring(1) },
+          }))}
+          willEnter={this.willEnter}
+          willLeave={this.willLeave}
+        >
+          {configs => (
+            <ul className="hList hList--3x" style={{
+              position: 'absolute',
+              top: 390,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              whiteSpace: 'nowrap',
+            }}>
+              {configs.map(config => {
+                const { operator } = config.data;
+                const isActive = openStream.includes(operator);
+                return (
+                  <li key={operator} style={{
+                    transform: `scale(${config.style.scale})`,
+                    opacity: config.style.scale,
+                  }}>
+                    <div className="tile tile--stack" />
+                    <button
+                      className="tile"
+                      disabled={isActive || !numbers.isOperatorIndex(this.props.numbers)}
+                      onClick={this.makeOnTokenClick(operator)}
+                    >
+                      <svg className="svg svg--smaller">
+                        <use xlinkHref={operatorMap[operator]} />
+                      </svg>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </TransitionMotion>
         <TransitionMotion
           styles={unusedLeaves.map((leaf, i) => ({
             key: String(leaf.index),
@@ -166,6 +177,7 @@ export default class GameContainer extends Component {
                       translate3d(${config.style.x}px, 0, 0)
                       scale(${config.style.scale})
                     `,
+                    opacity: config.style.scale,
                   }}>
                     <button
                       className="tile"

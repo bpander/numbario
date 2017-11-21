@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Difficulty } from 'config';
 import Gauge from 'components/Gauge';
 import * as root from 'ducks/root';
+import * as numbers from 'ducks/numbers';
 
 @connect(state => state)
 export default class UIContainer extends Component {
@@ -26,6 +27,8 @@ export default class UIContainer extends Component {
   };
 
   render() {
+    const wasSuccessful = numbers.wasSuccessful(this.props.numbers);
+    const isCollapsed = wasSuccessful;
     return (
       <div>
         <div className="masthead">
@@ -33,7 +36,7 @@ export default class UIContainer extends Component {
             <span className="typ typ--secondary typ--1.5x">le nombre</span>
           </div>
         </div>
-        <div className="main">
+        <div className={`main ${(isCollapsed) ? 'main--collapsed' : ''}`}>
           <div className="main__inner">
             <div className="main__content">
               <div className="typ typ--12x typ--neutral-16 typ--shadow-thin">

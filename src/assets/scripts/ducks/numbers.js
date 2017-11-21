@@ -70,6 +70,16 @@ export const getSteps = createSelector([
   ]);
 });
 
+export const wasSuccessful = createSelector([
+  state => state.target,
+  getLeaves,
+], (
+  target,
+  leaves,
+) => {
+  return leaves.length > 0 && last(leaves).value === target;
+});
+
 // Utility
 const cecil = configureCecil(6);
 
@@ -145,7 +155,7 @@ export const streamPush = token => (dispatch, getState) => {
     return;
   }
   const isStreamSolvable = stream.length > 0 && stream.length % streams.BIT_DEPTH === 0;
-  if (isStreamSolvable && !numbers.shouldSolveLastStep) {
+  if (isStreamSolvable) {
     setTimeout(() => {
       dispatch(update({ shouldSolveLastStep: true }));
     }, 400);
