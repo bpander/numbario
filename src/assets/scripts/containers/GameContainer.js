@@ -6,6 +6,19 @@ import * as numbers from 'ducks/numbers';
 import * as root from 'ducks/root';
 import { last } from 'util/arrays';
 
+// TODO: Organize this better
+const canvas = document.createElement('canvas');
+const context = canvas.getContext('2d');
+context.font = '24px "Source Sans Pro"';
+window.context = context;
+const getScale = value => {
+  const tileWidth = 48;
+  const textWidth = context.measureText(value).width;
+  const desiredWidth = tileWidth - 4;
+  const scale = desiredWidth / textWidth;
+  return Math.min(1, scale);
+};
+
 @connect(state => state)
 export default class GameContainer extends Component {
 
@@ -46,12 +59,18 @@ export default class GameContainer extends Component {
         <TransitionMotion
           styles={openStream.map((token, i) => ({
             key: String(token),
-            data: (i === OPERATOR_INDEX) ? token : leaves[token].value,
+            data: {
+              label: (i === OPERATOR_INDEX) ? token : leaves[token].value,
+              textScale: (i === OPERATOR_INDEX) ? 1 : getScale(leaves[token].value),
+            },
             style: { scale: spring(1), x: spring(i * 54) },
           }))}
           defaultStyles={openStream.map((token, i) => ({
             key: String(token),
-            data: (i === OPERATOR_INDEX) ? token : leaves[token].value,
+            data: {
+              label: (i === OPERATOR_INDEX) ? token : leaves[token].value,
+              textScale: (i === OPERATOR_INDEX) ? 1 : getScale(leaves[token].value),
+            },
             style: { scale: 0, x: i * 54 },
           }))}
           willEnter={this.willEnter}
@@ -68,7 +87,9 @@ export default class GameContainer extends Component {
                   `,
                 }}>
                   <div className="tile">
-                    <span>{config.data}</span>
+                    <span style={{ transform: `scale(${config.data.textScale})` }}>
+                      {config.data.label}
+                    </span>
                   </div>
                 </li>
               ))}
@@ -102,12 +123,12 @@ export default class GameContainer extends Component {
           styles={unusedLeaves.map((leaf, i) => ({
             key: String(leaf.index),
             style: { x: spring(i * 54), scale: spring(1) },
-            data: leaf,
+            data: { leaf, textScale: getScale(leaf.value) },
           }))}
           defaultStyles={unusedLeaves.map((leaf, i) => ({
             key: String(leaf.index),
             style: { x: i * 54, scale: 0 },
-            data: leaf,
+            data: { leaf, textScale: getScale(leaf.value) },
           }))}
           willEnter={this.willEnter}
           willLeave={this.willLeave}
@@ -126,9 +147,13 @@ export default class GameContainer extends Component {
                     <button
                       className="tile"
                       disabled={numbers.isOperatorIndex(this.props.numbers)}
-                      onClick={this.makeOnTokenClick(config.data.index)}
+                      onClick={this.makeOnTokenClick(config.data.leaf.index)}
                     >
-                      <span>{config.data.value}</span>
+                      <span
+                        style={{
+                          transform: `scale(${config.data.textScale})`,
+                        }}
+                      >{config.data.leaf.value}</span>
                     </button>
                   </li>
                 );
