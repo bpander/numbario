@@ -78,7 +78,7 @@ export default class GameContainer extends Component {
         >
           {configs => (
             <ul style={{ position: 'absolute', top: 300 }}>
-              {configs.map((config, i) => (
+              {configs.map(config => (
                 <li key={config.key} style={{
                   position: 'absolute',
                   transform: `

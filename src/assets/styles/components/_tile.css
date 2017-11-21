@@ -13,9 +13,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: box-shadow 200ms;
 }
 
 .tile--stack {
   position: absolute;
   top: 3px;
+}
+
+.tile:focus {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
 }
