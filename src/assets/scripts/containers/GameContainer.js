@@ -47,18 +47,18 @@ export default class GameContainer extends Component {
           styles={openStream.map((token, i) => ({
             key: String(token),
             data: (i === OPERATOR_INDEX) ? token : leaves[token].value,
-            style: { scale: spring(1), x: spring(i * 30) },
+            style: { scale: spring(1), x: spring(i * 54) },
           }))}
           defaultStyles={openStream.map((token, i) => ({
             key: String(token),
             data: (i === OPERATOR_INDEX) ? token : leaves[token].value,
-            style: { scale: 0, x: i * 30 },
+            style: { scale: 0, x: i * 54 },
           }))}
           willEnter={this.willEnter}
           willLeave={this.willLeave}
         >
           {configs => (
-            <ul style={{ position: 'absolute', top: 350 }}>
+            <ul style={{ position: 'absolute', top: 300 }}>
               {configs.map((config, i) => (
                 <li key={config.key} style={{
                   position: 'absolute',
@@ -67,40 +67,46 @@ export default class GameContainer extends Component {
                     scale(${config.style.scale})
                   `,
                 }}>
-                  <span>{config.data}</span>
+                  <div className="tile">
+                    <span>{config.data}</span>
+                  </div>
                 </li>
               ))}
             </ul>
           )}
         </TransitionMotion>
-        <div style={{
+        <ul className="hList hList--3x" style={{
           position: 'absolute',
-          top: 400,
+          top: 390,
           left: '50%',
           transform: 'translateX(-50%)',
+          whiteSpace: 'nowrap',
         }}>
           {[ '+', '-', '*', '/' ].map(operator => {
             const isActive = openStream.includes(operator);
             return (
-              <button
-                key={operator}
-                disabled={isActive || !numbers.isOperatorIndex(this.props.numbers)}
-                onClick={this.makeOnTokenClick(operator)}
-              >
-                {operator}
-              </button>
+              <li key={operator}>
+                <div className="tile tile--stack" />
+                <button
+                  className="tile"
+                  disabled={isActive || !numbers.isOperatorIndex(this.props.numbers)}
+                  onClick={this.makeOnTokenClick(operator)}
+                  >
+                  {operator}
+                </button>
+              </li>
             );
           })}
-        </div>
+        </ul>
         <TransitionMotion
           styles={unusedLeaves.map((leaf, i) => ({
             key: String(leaf.index),
-            style: { x: spring(i * 30), scale: spring(1) },
+            style: { x: spring(i * 54), scale: spring(1) },
             data: leaf,
           }))}
           defaultStyles={unusedLeaves.map((leaf, i) => ({
             key: String(leaf.index),
-            style: { x: i * 30, scale: 0 },
+            style: { x: i * 54, scale: 0 },
             data: leaf,
           }))}
           willEnter={this.willEnter}
@@ -118,10 +124,11 @@ export default class GameContainer extends Component {
                     `,
                   }}>
                     <button
+                      className="tile"
                       disabled={numbers.isOperatorIndex(this.props.numbers)}
                       onClick={this.makeOnTokenClick(config.data.index)}
                     >
-                      {config.data.value}
+                      <span>{config.data.value}</span>
                     </button>
                   </li>
                 );

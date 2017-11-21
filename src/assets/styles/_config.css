@@ -22,6 +22,9 @@
   --space-4x: 16px;
   --space-5x: 32px;
 
+  --tile-width: 48px;
+  --tile-height: 48px;
+
   --weight-normal: 400;
   --weight-semibold: 600;
 }

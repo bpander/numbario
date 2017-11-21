@@ -1,0 +1,21 @@
+
+.tile {
+  background: var(--color-neutral-16-16);
+  width:var(--tile-width);
+  height:var(--tile-height);
+  border: none;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  position: relative;
+  margin: 0;
+  padding: 0;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tile--stack {
+  position: absolute;
+  top: 3px;
+}
