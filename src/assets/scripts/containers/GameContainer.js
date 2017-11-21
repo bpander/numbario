@@ -9,7 +9,7 @@ import { last } from 'util/arrays';
 // TODO: Organize this better
 const canvas = document.createElement('canvas');
 const context = canvas.getContext('2d');
-context.font = '24px "Source Sans Pro"';
+context.font = '28px "Source Sans Pro"';
 window.context = context;
 const getScale = value => {
   const tileWidth = 48;
@@ -17,6 +17,13 @@ const getScale = value => {
   const desiredWidth = tileWidth - 4;
   const scale = desiredWidth / textWidth;
   return Math.min(1, scale);
+};
+
+const operatorMap = {
+  '+': '#add',
+  '-': '#subtract',
+  '*': '#multiply',
+  '/': '#divide',
 };
 
 @connect(state => state)
@@ -78,7 +85,7 @@ export default class GameContainer extends Component {
         >
           {configs => (
             <ul style={{ position: 'absolute', top: 300 }}>
-              {configs.map(config => (
+              {configs.map((config, i) => (
                 <li key={config.key} style={{
                   position: 'absolute',
                   transform: `
@@ -87,9 +94,15 @@ export default class GameContainer extends Component {
                   `,
                 }}>
                   <div className="tile">
-                    <span style={{ transform: `scale(${config.data.textScale})` }}>
-                      {config.data.label}
-                    </span>
+                    {(i === OPERATOR_INDEX) ? (
+                      <svg className="svg svg--smaller">
+                        <use xlinkHref={operatorMap[config.data.label]} />
+                      </svg>
+                    ) : (
+                      <span style={{ transform: `scale(${config.data.textScale})` }}>
+                        {config.data.label}
+                      </span>
+                    )}
                   </div>
                 </li>
               ))}
@@ -112,8 +125,10 @@ export default class GameContainer extends Component {
                   className="tile"
                   disabled={isActive || !numbers.isOperatorIndex(this.props.numbers)}
                   onClick={this.makeOnTokenClick(operator)}
-                  >
-                  {operator}
+                >
+                  <svg className="svg svg--smaller">
+                    <use xlinkHref={operatorMap[operator]} />
+                  </svg>
                 </button>
               </li>
             );
