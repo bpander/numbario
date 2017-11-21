@@ -60,6 +60,8 @@ export default class GameContainer extends Component {
     const leaves = numbers.getLeaves(this.props.numbers);
     const openStream = numbers.getOpenStream(this.props.numbers);
     const unusedLeaves = leaves.filter(l => !l.isUsed && !openStream.includes(l.index));
+    const { viewportWidth } = this.props.layout;
+    const stagingX = (viewportWidth - (openStream.length * 48 + (openStream.length - 1) * 6)) / 2;
 
     return (
       <div style={{ textAlign: 'center', position: 'absolute', top: 0, left: 0, width: '100%' }}>
@@ -70,7 +72,7 @@ export default class GameContainer extends Component {
               label: (i === OPERATOR_INDEX) ? token : leaves[token].value,
               textScale: (i === OPERATOR_INDEX) ? 1 : getScale(leaves[token].value),
             },
-            style: { scale: spring(1), x: spring(i * 54) },
+            style: { scale: spring(1), x: spring(stagingX + i * 54) },
           }))}
           defaultStyles={openStream.map((token, i) => ({
             key: String(token),
@@ -78,7 +80,7 @@ export default class GameContainer extends Component {
               label: (i === OPERATOR_INDEX) ? token : leaves[token].value,
               textScale: (i === OPERATOR_INDEX) ? 1 : getScale(leaves[token].value),
             },
-            style: { scale: 0, x: i * 54 },
+            style: { scale: 0, x: stagingX + i * 54 },
           }))}
           willEnter={this.willEnter}
           willLeave={this.willLeave}
@@ -149,7 +151,13 @@ export default class GameContainer extends Component {
           willLeave={this.willLeave}
         >
           {configs => (
-            <ul style={{ position: 'absolute', top: 450, left: 0 }}>
+            <ul style={{
+              position: 'absolute',
+              top: 450,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: 318,
+            }}>
               {configs.map(config => {
                 return (
                   <li key={config.key} style={{

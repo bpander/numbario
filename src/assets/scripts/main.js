@@ -11,7 +11,7 @@ node.innerHTML = '';
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <App dispatch={store.dispatch} />
   </Provider>,
   node,
 );
