@@ -13,12 +13,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: box-shadow 200ms;
+  transition: box-shadow 200ms, color 500ms;
 }
 
 .tile--stack {
   position: absolute;
   top: 3px;
+}
+
+.tile:disabled {
+  color: var(--color-neutral-11-16);
 }
 
 .tile:focus {
