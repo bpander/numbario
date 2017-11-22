@@ -1,0 +1,32 @@
+
+@keyframes pathAnim {
+  to { stroke-dashoffset: 0; }
+}
+
+.success.animated .success__path--circle {
+  animation: pathAnim 0.75s cubic-bezier(0.860, 0.000, 0.070, 1.000) forwards;
+}
+
+.success.animated .success__path--check {
+  animation: pathAnim 0.4s cubic-bezier(0.215, 0.610, 0.355, 1.000) 0.5s forwards;
+}
+
+.success__path {
+  fill: none;
+  stroke: currentColor;
+}
+
+.success__path--circle {
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+  transform-origin: 50%;
+  transform: rotate(-90deg);
+}
+
+.success__path--check {
+  stroke-width: 1.25;
+  stroke-linejoin: round;
+  stroke-miterlimit: 10;
+  stroke-dasharray: 18;
+  stroke-dashoffset: 18;
+}

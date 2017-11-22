@@ -55,10 +55,16 @@ export default class GameContainer extends Component {
       items.push({
         type: 'success',
         element: (
-          <svg className="svg svg--huge typ--success" style={{
-            filter: 'drop-shadow(1px 2px #1D9231)',
-          }}>
-            <use xlinkHref="#success" />
+          <svg
+            className="svg svg--huge typ--success success animated"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            style={{
+              filter: 'drop-shadow(1px 2px #1D9231)',
+            }}
+          >
+            <circle class="success__path success__path--circle" cx="12" cy="12" r="9.5"/>
+            <polyline class="success__path success__path--check" points="5.7,11.9 10,16.1 18.3,7.9"/>
           </svg>
         ),
       });
