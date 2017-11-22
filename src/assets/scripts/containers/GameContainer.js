@@ -59,6 +59,19 @@ export default class GameContainer extends Component {
 
     return (
       <div style={{ textAlign: 'center', position: 'absolute', top: 0, left: 0, width: '100%' }}>
+        {(wasSuccessful) && (
+          <div style={{
+            position: 'absolute',
+            top: '50vh',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            filter: 'drop-shadow(1px 2px #1D9231)',
+          }}>
+            <svg className="svg svg--huge typ--success">
+              <use xlinkHref="#success" />
+            </svg>
+          </div>
+        )}
         <TransitionMotion
           styles={openStream.map((token, i) => ({
             key: String(token),

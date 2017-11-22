@@ -8,5 +8,6 @@
 
 .svg--smaller { width: 18px; height: 18px; }
 .svg--bigger { width: 36px; height: 36px; }
+.svg--huge { width: 300px; height: 300px; }
 
 .svg--lightest { fill: var(--color-neutral-16-16); }

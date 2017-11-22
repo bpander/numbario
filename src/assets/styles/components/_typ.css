@@ -7,6 +7,7 @@
 
 .typ--primary { color: var(--color-primary); }
 .typ--secondary { color: var(--color-secondary); }
+.typ--success { color: var(--color-success); }
 .typ--neutral-16 { color: var(--color-neutral-16-16); }
 
 .typ--1x { font-size: var(--base-font-size); }
