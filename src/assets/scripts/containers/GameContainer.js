@@ -48,6 +48,24 @@ export default class GameContainer extends Component {
     this.props.dispatch(numbers.streamPush(token));
   };
 
+  getStatusItems() {
+    const wasSuccessful = numbers.wasSuccessful(this.props.numbers);
+    const items = [];
+    if (wasSuccessful) {
+      items.push({
+        type: 'success',
+        element: (
+          <svg className="svg svg--huge typ--success" style={{
+            filter: 'drop-shadow(1px 2px #1D9231)',
+          }}>
+            <use xlinkHref="#success" />
+          </svg>
+        ),
+      });
+    }
+    return items;
+  }
+
   render() {
     const wasSuccessful = numbers.wasSuccessful(this.props.numbers);
     const leaves = (wasSuccessful) ? [] : numbers.getLeaves(this.props.numbers);
@@ -56,22 +74,35 @@ export default class GameContainer extends Component {
     const unusedLeaves = leaves.filter(l => !l.isUsed && !openStream.includes(l.index));
     const { viewportWidth } = this.props.layout;
     const stagingX = (viewportWidth - (openStream.length * 48 + (openStream.length - 1) * 6)) / 2;
+    const statusItems = this.getStatusItems();
 
     return (
       <div style={{ textAlign: 'center', position: 'absolute', top: 0, left: 0, width: '100%' }}>
-        {(wasSuccessful) && (
-          <div style={{
-            position: 'absolute',
-            top: '50vh',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            filter: 'drop-shadow(1px 2px #1D9231)',
-          }}>
-            <svg className="svg svg--huge typ--success">
-              <use xlinkHref="#success" />
-            </svg>
-          </div>
-        )}
+        <TransitionMotion
+          styles={statusItems.map((item, i) => ({
+            key: item.type,
+            data: item.element,
+            style: { scale: spring(1) },
+          }))}
+          willEnter={this.willEnter}
+          willLeave={this.willLeave}
+        >
+          {configs => (
+            <div>
+              {configs.map(config => (
+                <div key={config.key} style={{
+                  position: 'absolute',
+                  top: '50vh',
+                  left: '50%',
+                  transform: `translate(-50%, -50%) scale(${0.8 + config.style.scale * 0.2}`,
+                  opacity: config.style.scale,
+                }}>
+                  {config.data}
+                </div>
+              ))}
+            </div>
+          )}
+        </TransitionMotion>
         <TransitionMotion
           styles={openStream.map((token, i) => ({
             key: String(token),
