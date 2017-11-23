@@ -6,6 +6,7 @@ import { configureCecil } from 'lib/cecil';
 import createSkinnyReducer from 'lib/createSkinnyReducer';
 import { solve } from 'lib/rpn';
 import * as streams from 'lib/streams';
+import * as user from 'ducks/user';
 
 
 const { reducer, update } = createSkinnyReducer('numbers/UPDATE', {
@@ -148,7 +149,7 @@ export const streamPop = () => (dispatch, getState) => {
 export const streamPush = token => (dispatch, getState) => {
   const { numbers } = getState();
   const stream = [ ...numbers.stream, token ];
-  const leaves = getLeaves({ ...numbers, stream });
+  const leaves = getLeaves({ ...numbers, stream, shouldSolveLastStep: true });
   const isValidStream = isWholeNumber(last(leaves).value);
   if (!isValidStream) {
     // TODO: Show not-whole-number error
@@ -158,6 +159,10 @@ export const streamPush = token => (dispatch, getState) => {
   if (isStreamSolvable) {
     setTimeout(() => {
       dispatch(update({ shouldSolveLastStep: true }));
+      const _wasSuccessful = wasSuccessful(getState().numbers);
+      if (_wasSuccessful) {
+        dispatch(user.incrementStreak());
+      }
     }, 400);
   }
   return dispatch(update({ stream, shouldSolveLastStep: false }));

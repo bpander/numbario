@@ -2,8 +2,6 @@ import { batchActions } from 'redux-batched-actions';
 import * as numbers from 'ducks/numbers';
 import * as user from 'ducks/user';
 
-const noop = x => x;
-
 export const giveUp = () => batchActions([
   user.update({ didGiveUp: true }),
 ]);
@@ -20,7 +18,6 @@ export const newRound = () => (dispatch, getState) => {
   const { difficulty } = getState().user;
   return dispatch(batchActions([
     numbers.newGame(difficulty),
-    user.incrementStreak()(noop, getState),
   ]));
 };
 

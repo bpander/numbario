@@ -4,13 +4,11 @@ import { connect } from 'react-redux';
 import { OPERATOR_INDEX } from 'lib/streams';
 import * as numbers from 'ducks/numbers';
 import * as root from 'ducks/root';
-import { last } from 'util/arrays';
 
 // TODO: Organize this better
 const canvas = document.createElement('canvas');
 const context = canvas.getContext('2d');
 context.font = '28px "Source Sans Pro"';
-window.context = context;
 const getScale = value => {
   const tileWidth = 48;
   const textWidth = context.measureText(value).width;
@@ -70,7 +68,10 @@ export default class GameContainer extends Component {
             }}
           >
             <circle class="success__path success__path--circle" cx="12" cy="12" r="9.5"/>
-            <polyline class="success__path success__path--check" points="5.7,11.9 10,16.1 18.3,7.9"/>
+            <polyline
+              class="success__path success__path--check"
+              points="5.7,11.9 10,16.1 18.3,7.9"
+            />
           </svg>
         ),
       });
@@ -91,7 +92,7 @@ export default class GameContainer extends Component {
     return (
       <div style={{ textAlign: 'center', position: 'absolute', top: 0, left: 0, width: '100%' }}>
         <TransitionMotion
-          styles={statusItems.map((item, i) => ({
+          styles={statusItems.map(item => ({
             key: item.type,
             data: item.element,
             style: { scale: spring(1) },
