@@ -44,8 +44,14 @@ export default class GameContainer extends Component {
     }
   }
 
-  makeOnTokenClick = token => () => {
-    this.props.dispatch(numbers.streamPush(token));
+  onOperatorClick = e => {
+    const operator = e.currentTarget.getAttribute('data-operator');
+    this.props.dispatch(numbers.streamPush(operator));
+  };
+
+  onNumberClick = e => {
+    const number = Number(e.currentTarget.getAttribute('data-number'));
+    this.props.dispatch(numbers.streamPush(number));
   };
 
   getStatusItems() {
@@ -185,7 +191,8 @@ export default class GameContainer extends Component {
                     <button
                       className="tile"
                       disabled={isActive || !numbers.isOperatorIndex(this.props.numbers)}
-                      onClick={this.makeOnTokenClick(operator)}
+                      data-operator={operator}
+                      onClick={this.onOperatorClick}
                     >
                       <svg className="svg svg--smaller">
                         <use xlinkHref={operatorMap[operator]} />
@@ -232,7 +239,8 @@ export default class GameContainer extends Component {
                     <button
                       className="tile"
                       disabled={numbers.isOperatorIndex(this.props.numbers)}
-                      onClick={this.makeOnTokenClick(config.data.leaf.index)}
+                      data-number={config.data.leaf.index}
+                      onClick={this.onNumberClick}
                     >
                       <span
                         style={{
