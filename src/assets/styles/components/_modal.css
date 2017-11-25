@@ -1,0 +1,19 @@
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-ghost);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.modal__dialog {
+  background: var(--color-neutral-16-16);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.33);
+  border-radius: 2px;
+}

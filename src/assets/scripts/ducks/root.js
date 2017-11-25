@@ -3,7 +3,7 @@ import * as numbers from 'ducks/numbers';
 import * as user from 'ducks/user';
 
 export const giveUp = () => batchActions([
-  user.update({ didGiveUp: true }),
+  user.update({ isGivingUp: true }),
 ]);
 
 export const newGame = () => (dispatch, getState) => {

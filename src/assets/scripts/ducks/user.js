@@ -10,6 +10,7 @@ const { reducer, update } = createSkinnyReducer('user/UPDATE', {
     [Difficulty.HARD]: 0,
   },
   didGiveUp: false,
+  isGivingUp: false,
   isFirstTime: true,
 });
 export default reducer;

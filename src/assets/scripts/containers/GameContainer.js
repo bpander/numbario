@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { TransitionMotion, spring, stripStyle } from 'react-motion';
 import { connect } from 'react-redux';
+
+import Modal from 'components/Modal';
 import { OPERATOR_INDEX } from 'lib/streams';
 import * as numbers from 'ducks/numbers';
 import * as root from 'ducks/root';
+import * as user from 'ducks/user';
 
 // TODO: Organize this better
 const canvas = document.createElement('canvas');
@@ -37,8 +40,7 @@ export default class GameContainer extends Component {
 
   componentWillMount() {
     if (!this.props.numbers.inventory.length) {
-      const { user } = this.props;
-      this.props.dispatch(root.newGame(user.difficulty));
+      this.props.dispatch(root.newGame(this.props.user.difficulty));
     }
   }
 
@@ -67,9 +69,9 @@ export default class GameContainer extends Component {
               filter: 'drop-shadow(1px 2px #1D9231)',
             }}
           >
-            <circle class="success__path success__path--circle" cx="12" cy="12" r="9.5"/>
+            <circle className="success__path success__path--circle" cx="12" cy="12" r="9.5"/>
             <polyline
-              class="success__path success__path--check"
+              className="success__path success__path--check"
               points="5.7,11.9 10,16.1 18.3,7.9"
             />
           </svg>
@@ -255,6 +257,12 @@ export default class GameContainer extends Component {
             </ul>
           )}
         </TransitionMotion>
+        <Modal isOpen={this.props.user.isGivingUp}>
+          <div>Are you sure you want to see the answer?</div>
+          <button onClick={() => this.props.dispatch(user.update({ isGivingUp: false }))}>
+            No
+          </button>
+        </Modal>
       </div>
     );
   }
