@@ -26,7 +26,7 @@ const Modal = props => {
             className="modal"
             style={{ opacity: progress }}
           >
-            <div className="modal__dialog" style={{ transform: `scale(${0.9 + progress * 0.1})` }}>
+            <div className="modal__dialog" style={{ transform: `translateZ(0) scale(${0.9 + progress * 0.1})` }}>
               {props.children}
             </div>
           </div>

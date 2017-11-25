@@ -17,3 +17,7 @@
 .typ--shadow-thin { text-shadow: var(--shadow-thin); }
 
 .typ--right { text-align: right; }
+
+.typ--copy {
+  line-height: 1.3;
+}

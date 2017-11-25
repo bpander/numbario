@@ -258,10 +258,28 @@ export default class GameContainer extends Component {
           )}
         </TransitionMotion>
         <Modal isOpen={this.props.user.isGivingUp}>
-          <div>Are you sure you want to see the answer?</div>
-          <button onClick={() => this.props.dispatch(user.update({ isGivingUp: false }))}>
-            No
-          </button>
+          <div className="modal__body typ typ--copy">
+            Are you sure you want to see the answer?
+            This will reset your streak {' '}
+            <svg className="svg svg--smaller typ--secondary">
+              <use xlinkHref="#link" />
+            </svg>{' '}
+            back to 0.
+          </div>
+          <div className="modal__footer">
+            <ul className="hList hList--2x">
+              <li>
+                <button className="button button--invert" onClick={() => this.props.dispatch(user.update({ isGivingUp: false }))}>
+                  Cancel
+                </button>
+              </li>
+              <li>
+                <button className="button">
+                  See answer
+                </button>
+              </li>
+            </ul>
+          </div>
         </Modal>
       </div>
     );

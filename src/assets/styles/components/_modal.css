@@ -14,6 +14,14 @@
 
 .modal__dialog {
   background: var(--color-neutral-16-16);
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.33);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
   border-radius: 2px;
+  width: 300px;
+  text-align: left;
+  padding: var(--space-4x);
+}
+
+.modal__footer {
+  margin-top: var(--space-4x);
+  text-align: right;
 }

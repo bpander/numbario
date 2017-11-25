@@ -12,6 +12,7 @@
 
 /* Components */
 @import "components/_bubble";
+@import "components/_button";
 @import "components/_gauge";
 @import "components/_main";
 @import "components/_masthead";
