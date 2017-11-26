@@ -4,6 +4,10 @@ export const OPERAND = '0';
 export const OPERATOR = '1';
 export const operators = [ '+', '-', '*', '/' ];
 
+export const AUGEND_INDEX = 0;
+export const ADDEND_INDEX = 1;
+export const OPERATOR_INDEX = 2;
+
 export const getRpnCombinations = length => {
   const combos = [];
   const recurse = (n, operandQueue = n, operatorQueue = -1, combo = '') => {

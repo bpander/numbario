@@ -4,7 +4,7 @@ import { chunk, last, times } from 'util/arrays';
 import { isBetween, isWholeNumber, randomInt } from 'util/numbers';
 import { configureCecil } from 'lib/cecil';
 import createSkinnyReducer from 'lib/createSkinnyReducer';
-import { solve } from 'lib/rpn';
+import * as rpn from 'lib/rpn';
 import * as streams from 'lib/streams';
 import * as user from 'ducks/user';
 
@@ -112,10 +112,29 @@ const getNumbersGenerator = difficulty => {
 
 const getValidator = difficulty => result => {
   const { solution, steps } = result;
-  const hasNonWholeNumber = steps.some(step => !isWholeNumber(solve(...step)));
+  const hasNonWholeNumber = steps.some(step => !isWholeNumber(rpn.solve(...step)));
   if (hasNonWholeNumber) {
     return false;
   }
+
+  const isNoOp = steps.some(step => {
+    if (step[rpn.OPERATOR_INDEX] === '/' && step[rpn.ADDEND_INDEX] === 1) {
+      return true;
+    }
+    if (step[rpn.OPERATOR_INDEX] === '*' && step.includes(1)) {
+      return true;
+    }
+    return step[rpn.ADDEND_INDEX] === rpn.solve(...step);
+  });
+  if (isNoOp) {
+    return false;
+  }
+
+  const hasNegative = steps.some(step => rpn.solve(...step) <= 0);
+  if (hasNegative) {
+    return false;
+  }
+
   switch (difficulty) {
     case Difficulty.EASY: return isBetween(solution, 11, 99);
     case Difficulty.NORMAL: return isBetween(solution, 101, 499);

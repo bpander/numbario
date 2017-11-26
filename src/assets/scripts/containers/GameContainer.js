@@ -3,10 +3,11 @@ import { TransitionMotion, spring, stripStyle } from 'react-motion';
 import { connect } from 'react-redux';
 
 import Modal from 'components/Modal';
-import { OPERATOR_INDEX } from 'lib/streams';
 import * as numbers from 'ducks/numbers';
 import * as root from 'ducks/root';
 import * as user from 'ducks/user';
+import * as rpn from 'lib/rpn';
+import { OPERATOR_INDEX } from 'lib/streams';
 
 // TODO: Organize this better
 const canvas = document.createElement('canvas');
@@ -81,11 +82,46 @@ export default class GameContainer extends Component {
     return items;
   }
 
+  renderAnswer() {
+    if (!this.props.user.didGiveUp) {
+      return;
+    }
+    return (
+      <ol className="vList vList--4x">
+        {this.props.numbers.answer.map((step, i) => (
+          <li key={i}>
+            <div className="hList hList--2x hList--centered">
+              <div>
+                <div className="tile">{step[rpn.AUGEND_INDEX]}</div>
+              </div>
+              <div>
+                <div className="tile">
+                  <svg className="svg svg--smaller">
+                    <use xlinkHref={operatorMap[step[rpn.OPERATOR_INDEX]]} />
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <div className="tile">{step[rpn.ADDEND_INDEX]}</div>
+              </div>
+              <div>
+                <div className="tile tile--empty">
+                  {rpn.solve(...step)}
+                </div>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ol>
+    );
+  }
+
   render() {
     const wasSuccessful = numbers.wasSuccessful(this.props.numbers);
-    const leaves = (wasSuccessful) ? [] : numbers.getLeaves(this.props.numbers);
-    const openStream =  (wasSuccessful) ? [] : numbers.getOpenStream(this.props.numbers);
-    const operators = (wasSuccessful) ? [] : [ '+', '-', '*', '/' ];
+    const shouldFoo = wasSuccessful || this.props.user.didGiveUp;
+    const leaves = (shouldFoo) ? [] : numbers.getLeaves(this.props.numbers);
+    const openStream =  (shouldFoo) ? [] : numbers.getOpenStream(this.props.numbers);
+    const operators = (shouldFoo) ? [] : [ '+', '-', '*', '/' ];
     const unusedLeaves = leaves.filter(l => !l.isUsed && !openStream.includes(l.index));
     const { viewportWidth } = this.props.layout;
     const stagingX = (viewportWidth - (openStream.length * 48 + (openStream.length - 1) * 6)) / 2;
@@ -118,6 +154,7 @@ export default class GameContainer extends Component {
             </div>
           )}
         </TransitionMotion>
+        {this.renderAnswer()}
         <TransitionMotion
           styles={openStream.map((token, i) => ({
             key: String(token),
@@ -274,7 +311,7 @@ export default class GameContainer extends Component {
                 </button>
               </li>
               <li>
-                <button className="button">
+                <button className="button" onClick={() => this.props.dispatch(user.update({ didGiveUp: true, isGivingUp: false }))}>
                   See answer
                 </button>
               </li>

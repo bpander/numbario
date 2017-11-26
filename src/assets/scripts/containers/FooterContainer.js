@@ -15,6 +15,11 @@ export default class FooterContainer extends Component {
   };
 
   onGiveUp = () => {
+    if (this.props.user.didGiveUp) {
+      this.props.dispatch(root.newGame());
+      return;
+    }
+
     const wasSuccessful = numbers.wasSuccessful(this.props.numbers);
     if (wasSuccessful) {
       this.props.dispatch(root.newRound());
@@ -25,17 +30,18 @@ export default class FooterContainer extends Component {
 
   render() {
     const wasSuccessful = numbers.wasSuccessful(this.props.numbers);
+    const isInterstitial = wasSuccessful || this.props.user.didGiveUp;
     return (
       <ul className="hList hList--3x">
         <li>
-          <button className="bubble" onClick={this.onUndo} disabled={wasSuccessful}>
+          <button className="bubble" onClick={this.onUndo} disabled={isInterstitial}>
             <svg className="svg svg--bigger svg--lightest">
               <use xlinkHref="#undo" />
             </svg>
           </button>
         </li>
         <li>
-          <button className="bubble" onClick={this.onRefresh} disabled={wasSuccessful}>
+          <button className="bubble" onClick={this.onRefresh} disabled={isInterstitial}>
             <svg className="svg svg--bigger svg--lightest">
               <use xlinkHref="#refresh" />
             </svg>

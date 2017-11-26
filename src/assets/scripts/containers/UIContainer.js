@@ -28,7 +28,7 @@ export default class UIContainer extends Component {
 
   render() {
     const wasSuccessful = numbers.wasSuccessful(this.props.numbers);
-    const isCollapsed = wasSuccessful;
+    const isCollapsed = wasSuccessful || this.props.user.didGiveUp;
     return (
       <div>
         <div className="masthead">
