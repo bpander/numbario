@@ -40,23 +40,27 @@ export default class GameContainer extends Component {
   }
 
   componentWillMount() {
-    if (!this.props.numbers.inventory.length) {
+    if (!this.props.numbers[this.props.user.difficulty].inventory.length) {
       this.props.dispatch(root.newGame(this.props.user.difficulty));
     }
   }
 
+  onCancelClick = () => this.props.dispatch(user.update({ isGivingUp: false }));
+
+  onGiveUpClick = () => this.props.dispatch(user.update({ didGiveUp: true, isGivingUp: false }));
+
   onOperatorClick = e => {
     const operator = e.currentTarget.getAttribute('data-operator');
-    this.props.dispatch(numbers.streamPush(operator));
+    this.props.dispatch(numbers.streamPush(this.props.user.difficulty)(operator));
   };
 
   onNumberClick = e => {
     const number = Number(e.currentTarget.getAttribute('data-number'));
-    this.props.dispatch(numbers.streamPush(number));
+    this.props.dispatch(numbers.streamPush(this.props.user.difficulty)(number));
   };
 
   getStatusItems() {
-    const wasSuccessful = numbers.wasSuccessful(this.props.numbers);
+    const wasSuccessful = numbers.wasSuccessful(this.props.user.difficulty)(this.props.numbers);
     const items = [];
     if (wasSuccessful) {
       items.push({
@@ -88,7 +92,7 @@ export default class GameContainer extends Component {
     }
     return (
       <ol className="vList vList--4x">
-        {this.props.numbers.answer.map((step, i) => (
+        {this.props.numbers[this.props.user.difficulty].answer.map((step, i) => (
           <li key={i}>
             <div className="hList hList--2x hList--centered">
               <div>
@@ -117,15 +121,17 @@ export default class GameContainer extends Component {
   }
 
   render() {
-    const wasSuccessful = numbers.wasSuccessful(this.props.numbers);
+    const { difficulty } = this.props.user;
+    const wasSuccessful = numbers.wasSuccessful(difficulty)(this.props.numbers);
     const shouldFoo = wasSuccessful || this.props.user.didGiveUp;
-    const leaves = (shouldFoo) ? [] : numbers.getLeaves(this.props.numbers);
-    const openStream =  (shouldFoo) ? [] : numbers.getOpenStream(this.props.numbers);
+    const leaves = (shouldFoo) ? [] : numbers.getLeaves(difficulty)(this.props.numbers);
+    const openStream =  (shouldFoo) ? [] : numbers.getOpenStream(difficulty)(this.props.numbers);
     const operators = (shouldFoo) ? [] : [ '+', '-', '*', '/' ];
     const unusedLeaves = leaves.filter(l => !l.isUsed && !openStream.includes(l.index));
     const { viewportWidth } = this.props.layout;
     const stagingX = (viewportWidth - (openStream.length * 48 + (openStream.length - 1) * 6)) / 2;
     const statusItems = this.getStatusItems();
+    const isOperatorIndex = numbers.isOperatorIndex(difficulty)(this.props.numbers);
 
     return (
       <div style={{ textAlign: 'center', position: 'absolute', top: 0, left: 0, width: '100%' }}>
@@ -230,7 +236,7 @@ export default class GameContainer extends Component {
                     <div className="tile tile--stack" />
                     <button
                       className="tile"
-                      disabled={isActive || !numbers.isOperatorIndex(this.props.numbers)}
+                      disabled={isActive || !isOperatorIndex}
                       data-operator={operator}
                       onClick={this.onOperatorClick}
                     >
@@ -278,7 +284,7 @@ export default class GameContainer extends Component {
                   }}>
                     <button
                       className="tile"
-                      disabled={numbers.isOperatorIndex(this.props.numbers)}
+                      disabled={isOperatorIndex}
                       data-number={config.data.leaf.index}
                       onClick={this.onNumberClick}
                     >
@@ -306,12 +312,12 @@ export default class GameContainer extends Component {
           <div className="modal__footer">
             <ul className="hList hList--2x">
               <li>
-                <button className="button button--invert" onClick={() => this.props.dispatch(user.update({ isGivingUp: false }))}>
+                <button className="button button--invert" onClick={this.onCancelClick}>
                   Cancel
                 </button>
               </li>
               <li>
-                <button className="button" onClick={() => this.props.dispatch(user.update({ didGiveUp: true, isGivingUp: false }))}>
+                <button className="button" onClick={this.onGiveUpClick}>
                   See answer
                 </button>
               </li>

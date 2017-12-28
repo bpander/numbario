@@ -7,11 +7,11 @@ import * as root from 'ducks/root';
 export default class FooterContainer extends Component {
 
   onUndo = () => {
-    this.props.dispatch(numbers.streamPop());
+    this.props.dispatch(numbers.streamPop(this.props.user.difficulty));
   };
 
   onRefresh = () => {
-    this.props.dispatch(numbers.streamClear());
+    this.props.dispatch(numbers.streamClear(this.props.user.difficulty));
   };
 
   onGiveUp = () => {
@@ -20,7 +20,7 @@ export default class FooterContainer extends Component {
       return;
     }
 
-    const wasSuccessful = numbers.wasSuccessful(this.props.numbers);
+    const wasSuccessful = numbers.wasSuccessful(this.props.user.difficulty)(this.props.numbers);
     if (wasSuccessful) {
       this.props.dispatch(root.newRound());
     } else {
@@ -29,7 +29,7 @@ export default class FooterContainer extends Component {
   };
 
   render() {
-    const wasSuccessful = numbers.wasSuccessful(this.props.numbers);
+    const wasSuccessful = numbers.wasSuccessful(this.props.user.difficulty)(this.props.numbers);
     const isInterstitial = wasSuccessful || this.props.user.didGiveUp;
     return (
       <ul className="hList hList--3x">

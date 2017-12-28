@@ -27,7 +27,7 @@ export default class UIContainer extends Component {
   };
 
   render() {
-    const wasSuccessful = numbers.wasSuccessful(this.props.numbers);
+    const wasSuccessful = numbers.wasSuccessful(this.props.user.difficulty)(this.props.numbers);
     const isCollapsed = wasSuccessful || this.props.user.didGiveUp;
     return (
       <div>
@@ -40,7 +40,7 @@ export default class UIContainer extends Component {
           <div className="main__inner">
             <div className="main__content">
               <div className="typ typ--12x typ--neutral-16 typ--shadow-thin">
-                {this.props.numbers.target}
+                {this.props.numbers[this.props.user.difficulty].target}
               </div>
               <div className="typ typ--1.5x typ--secondary">make this</div>
             </div>
@@ -60,7 +60,7 @@ export default class UIContainer extends Component {
           <ul className="vList vList--2x">
             <li>
               <dl className="hList hList--centered hList--2x">
-                <dd>{this.props.user.streak.toLocaleString()}</dd>
+                <dd>{this.props.user.streak[this.props.user.difficulty].toLocaleString()}</dd>
                 <dt>
                   <svg style={{ display: 'block', fill: 'currentColor' }} width="32" height="32">
                     <use xlinkHref="#link" />

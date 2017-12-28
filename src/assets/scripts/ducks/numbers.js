@@ -8,21 +8,26 @@ import * as rpn from 'lib/rpn';
 import * as streams from 'lib/streams';
 import * as user from 'ducks/user';
 
-
-const { reducer, update } = createSkinnyReducer('numbers/UPDATE', {
+const getInitialState = () => ({
   answer: [],
   inventory: [],
   stream: [],
   target: null,
   shouldSolveLastStep: false,
 });
+
+const { reducer, update } = createSkinnyReducer('numbers/UPDATE', {
+  [Difficulty.EASY]: getInitialState(),
+  [Difficulty.NORMAL]: getInitialState(),
+  [Difficulty.HARD]: getInitialState(),
+});
 export default reducer;
 
 // Selectors
-export const getLeaves = createSelector([
-  state => state.stream,
-  state => state.inventory,
-  state => state.shouldSolveLastStep,
+export const getLeaves = createSelector(d => d, d => createSelector([
+  state => state[d].stream,
+  state => state[d].inventory,
+  state => state[d].shouldSolveLastStep,
 ], (
   stream,
   inventory,
@@ -35,15 +40,15 @@ export const getLeaves = createSelector([
     streamToSolve = stream.slice(0, lastSolvableIndex);
   }
   return streams.evaluateStream(streamToSolve, inventory);
-});
+}));
 
-export const isOperatorIndex = createSelector([
-  state => state.stream,
-], stream => streams.getLocalIndex(stream, stream.length) === streams.OPERATOR_INDEX);
+export const isOperatorIndex = createSelector(d => d, d => createSelector([
+  state => state[d].stream,
+], stream => streams.getLocalIndex(stream, stream.length) === streams.OPERATOR_INDEX));
 
-export const getOpenStream = createSelector([
-  state => state.stream,
-  state => state.shouldSolveLastStep,
+export const getOpenStream = createSelector(d => d, d => createSelector([
+  state => state[d].stream,
+  state => state[d].shouldSolveLastStep,
 ], (
   stream,
   shouldSolveLastStep,
@@ -55,11 +60,11 @@ export const getOpenStream = createSelector([
     openStream = stream.slice(streams.BIT_DEPTH * -1);
   }
   return openStream;
-});
+}));
 
-export const getSteps = createSelector([
-  state => state.stream,
-  getLeaves,
+export const getSteps = createSelector(d => d, d => createSelector([
+  state => state[d].stream,
+  getLeaves(d),
 ], (
   stream,
   leaves,
@@ -69,17 +74,17 @@ export const getSteps = createSelector([
     ch[streams.OPERATOR_INDEX],
     (leaves[ch[streams.ADDEND_INDEX]] || {}).value,
   ]);
-});
+}));
 
-export const wasSuccessful = createSelector([
-  state => state.target,
-  getLeaves,
+export const wasSuccessful = createSelector(d => d, d => createSelector([
+  state => state[d].target,
+  getLeaves(d),
 ], (
   target,
   leaves,
 ) => {
   return leaves.length > 0 && last(leaves).value === target;
-});
+}));
 
 // Utility
 const cecil = configureCecil(6);
@@ -110,6 +115,24 @@ const getNumbersGenerator = difficulty => {
   throw new Error(`Unrecognized difficulty: ${difficulty}.`);
 };
 
+const isNoOpStep = step => {
+  if (step[rpn.OPERATOR_INDEX] === '/' && step[rpn.ADDEND_INDEX] === 1) {
+    return true;
+  }
+  if (step[rpn.OPERATOR_INDEX] === '*' && step.includes(1)) {
+    return true;
+  }
+  return step[rpn.ADDEND_INDEX] === rpn.solve(...step);
+};
+
+const isValidTarget = (solution, difficulty) => {
+  switch (difficulty) {
+    case Difficulty.EASY: return isBetween(solution, 11, 99);
+    case Difficulty.NORMAL: return isBetween(solution, 101, 499);
+    case Difficulty.HARD: return isBetween(solution, 101, 999);
+  }
+};
+
 const getValidator = difficulty => result => {
   const { solution, steps } = result;
   const hasNonWholeNumber = steps.some(step => !isWholeNumber(rpn.solve(...step)));
@@ -117,16 +140,7 @@ const getValidator = difficulty => result => {
     return false;
   }
 
-  const isNoOp = steps.some(step => {
-    if (step[rpn.OPERATOR_INDEX] === '/' && step[rpn.ADDEND_INDEX] === 1) {
-      return true;
-    }
-    if (step[rpn.OPERATOR_INDEX] === '*' && step.includes(1)) {
-      return true;
-    }
-    return step[rpn.ADDEND_INDEX] === rpn.solve(...step);
-  });
-  if (isNoOp) {
+  if (steps.some(isNoOpStep)) {
     return false;
   }
 
@@ -135,11 +149,7 @@ const getValidator = difficulty => result => {
     return false;
   }
 
-  switch (difficulty) {
-    case Difficulty.EASY: return isBetween(solution, 11, 99);
-    case Difficulty.NORMAL: return isBetween(solution, 101, 499);
-    case Difficulty.HARD: return isBetween(solution, 101, 999);
-  }
+  return isValidTarget(solution, difficulty);
 };
 
 // Action Creators
@@ -150,39 +160,55 @@ export const newGame = difficulty => {
   });
 
   return update({
-    inventory:  result.numbers,
-    answer:     result.steps,
-    target:     result.solution,
-    stream:     [],
+    [difficulty]: {
+      ...getInitialState(),
+      inventory:  result.numbers,
+      answer:     result.steps,
+      target:     result.solution,
+    },
   });
 };
 
-export const streamClear = () => update({ stream: [] });
-
-export const streamPop = () => (dispatch, getState) => {
+export const streamClear = difficulty => (dispatch, getState) => {
   const { numbers } = getState();
-  const stream = numbers.stream.slice(0, -1);
-  return dispatch(update({ stream, shouldSolveLastStep: true }));
+  return dispatch(update({ [difficulty]: { ...numbers[difficulty], stream: [] } }));
 };
 
-export const streamPush = token => (dispatch, getState) => {
+export const streamPop = difficulty => (dispatch, getState) => {
   const { numbers } = getState();
-  const stream = [ ...numbers.stream, token ];
-  const leaves = getLeaves({ ...numbers, stream, shouldSolveLastStep: true });
-  const isValidStream = isWholeNumber(last(leaves).value);
-  if (!isValidStream) {
-    // TODO: Show not-whole-number error
-    return;
-  }
+  const stream = numbers[difficulty].stream.slice(0, -1);
+  return dispatch(update({
+    [difficulty]: {
+      ...numbers[difficulty],
+      stream,
+      shouldSolveLastStep: true,
+    },
+  }));
+};
+
+export const streamPush = difficulty => token => (dispatch, getState) => {
+  const { numbers } = getState();
+  const stream = [ ...numbers[difficulty].stream, token ];
   const isStreamSolvable = stream.length > 0 && stream.length % streams.BIT_DEPTH === 0;
   if (isStreamSolvable) {
     setTimeout(() => {
-      dispatch(update({ shouldSolveLastStep: true }));
-      const _wasSuccessful = wasSuccessful(getState().numbers);
+      dispatch(update({
+        [difficulty]: {
+          ...getState().numbers[difficulty],
+          shouldSolveLastStep: true,
+        },
+      }));
+      const _wasSuccessful = wasSuccessful(difficulty)(getState().numbers);
       if (_wasSuccessful) {
         dispatch(user.incrementStreak());
       }
     }, 400);
   }
-  return dispatch(update({ stream, shouldSolveLastStep: false }));
+  return dispatch(update({
+    [difficulty]: {
+      ...numbers[difficulty],
+      stream,
+      shouldSolveLastStep: false,
+    },
+  }));
 };
