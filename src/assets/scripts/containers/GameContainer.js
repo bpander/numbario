@@ -134,7 +134,13 @@ export default class GameContainer extends Component {
     const isOperatorIndex = numbers.isOperatorIndex(difficulty)(this.props.numbers);
 
     return (
-      <div style={{ textAlign: 'center', position: 'absolute', top: 0, left: 0, width: '100%' }}>
+      <div style={{
+        textAlign: 'center',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        width: '100%',
+      }}>
         <TransitionMotion
           styles={statusItems.map(item => ({
             key: item.type,
@@ -149,9 +155,9 @@ export default class GameContainer extends Component {
               {configs.map(config => (
                 <div key={config.key} style={{
                   position: 'absolute',
-                  top: '50vh',
+                  bottom: '50vh',
                   left: '50%',
-                  transform: `translate(-50%, -50%) scale(${0.8 + config.style.scale * 0.2}`,
+                  transform: `translate(-50%, 50%) scale(${0.7 + config.style.scale * 0.3}`,
                   opacity: config.style.scale,
                 }}>
                   {config.data}
@@ -182,7 +188,7 @@ export default class GameContainer extends Component {
           willLeave={this.willLeave}
         >
           {configs => (
-            <ul style={{ position: 'absolute', top: 300 }}>
+            <ul style={{ position: 'absolute', bottom: 275 }}>
               {configs.map((config, i) => (
                 <li key={config.key} style={{
                   position: 'absolute',
@@ -220,7 +226,7 @@ export default class GameContainer extends Component {
           {configs => (
             <ul className="hList hList--3x" style={{
               position: 'absolute',
-              top: 390,
+              bottom: 160,
               left: '50%',
               transform: 'translateX(-50%)',
               whiteSpace: 'nowrap',
@@ -267,7 +273,7 @@ export default class GameContainer extends Component {
           {configs => (
             <ul style={{
               position: 'absolute',
-              top: 450,
+              bottom: 100,
               left: '50%',
               transform: 'translateX(-50%)',
               width: 318,
@@ -276,6 +282,7 @@ export default class GameContainer extends Component {
                 return (
                   <li key={config.key} style={{
                     position: 'absolute',
+                    bottom: 0,
                     transform: `
                       translate3d(${config.style.x}px, 0, 0)
                       scale(${config.style.scale})

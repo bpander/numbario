@@ -27,8 +27,8 @@ export default class App extends Component {
         <UIContainer />
         <GameContainer />
         <div style={{
-          position: 'fixed',
-          bottom: 0,
+          position: 'absolute',
+          bottom: 16,
           width: '100%',
           textAlign: 'center',
         }}>

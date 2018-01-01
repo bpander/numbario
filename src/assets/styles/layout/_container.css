@@ -1,17 +1,16 @@
 
+
 .container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
+  min-height: calc(568px - var(--ad-height));
   height: 100vh;
 }
 
 .container-inner {
-  flex: 1;
-  min-height: 500px;
-  max-height: 960px;
-  height: 100%;
+  height: calc(100% - var(--ad-height));
   position: relative;
-  background: var(--color-neutral-15-16);
+}
+
+.container-ad {
+  background: red;
+  height: var(--ad-height);
 }
