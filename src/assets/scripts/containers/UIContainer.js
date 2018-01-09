@@ -39,14 +39,17 @@ export default class UIContainer extends Component {
         <div className={`main ${(isCollapsed) ? 'main--collapsed' : ''}`}>
           <div className="main__inner">
             <div className="main__content">
-              <div className="typ typ--12x typ--neutral-16 typ--shadow-thin">
+              <div className="typ typ--neutral-16 typ--shadow-thin" style={{ lineHeight: 0.8 }}>
                 {this.props.numbers[this.props.user.difficulty].target}
               </div>
               <div className="typ typ--1.5x typ--secondary">make this</div>
             </div>
           </div>
+          <div className="main__appendex">
+            <div className="typ typ--1.5x typ--secondary">with this</div>
+          </div>
         </div>
-        <div style={{ position: 'absolute', top: 0, right: 8 }}>
+        <div style={{ position: 'absolute', zIndex: 10, top: 0, right: 8 }}>
           <Gauge
             onClick={this.onGaugeClick}
             position={UIContainer.getGaugePosition(this.props.user.difficulty)}
