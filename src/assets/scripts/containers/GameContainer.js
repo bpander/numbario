@@ -123,6 +123,7 @@ export default class GameContainer extends Component {
   render() {
     const { difficulty } = this.props.user;
     const wasSuccessful = numbers.wasSuccessful(difficulty)(this.props.numbers);
+    // TODO: Rename shouldFoo. shouldFoo = should show success/error
     const shouldFoo = wasSuccessful || this.props.user.didGiveUp;
     const leaves = (shouldFoo) ? [] : numbers.getLeaves(difficulty)(this.props.numbers);
     const openStream =  (shouldFoo) ? [] : numbers.getOpenStream(difficulty)(this.props.numbers);
@@ -188,7 +189,7 @@ export default class GameContainer extends Component {
           willLeave={this.willLeave}
         >
           {configs => (
-            <ul style={{ position: 'absolute', bottom: 275 }}>
+            <ul style={{ position: 'absolute', bottom: 305 }}>
               {configs.map((config, i) => (
                 <li key={config.key} style={{
                   position: 'absolute',
@@ -214,6 +215,16 @@ export default class GameContainer extends Component {
             </ul>
           )}
         </TransitionMotion>
+        <div style={{
+          position: 'absolute',
+          bottom: 215,
+          width: '100%',
+          opacity: (shouldFoo) ? 0 : 1,
+          transform: `translateY(${(shouldFoo) ? -10 : 0}px)`,
+          transition: 'opacity 450ms, transform 450ms',
+        }}>
+          <div className="typ typ--1.5x typ--secondary">with this</div>
+        </div>
         <TransitionMotion
           styles={operators.map(operator => ({
             key: operator,
