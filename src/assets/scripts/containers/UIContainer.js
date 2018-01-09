@@ -4,6 +4,7 @@ import { Difficulty } from 'config';
 import Gauge from 'components/Gauge';
 import * as root from 'ducks/root';
 import * as numbers from 'ducks/numbers';
+import cssConfig from '_config.css.json';
 
 @connect(state => state)
 export default class UIContainer extends Component {
@@ -29,6 +30,9 @@ export default class UIContainer extends Component {
   render() {
     const wasSuccessful = numbers.wasSuccessful(this.props.user.difficulty)(this.props.numbers);
     const isCollapsed = wasSuccessful || this.props.user.didGiveUp;
+    const { viewportHeight } = this.props.layout;
+    const minHeight = parseInt(cssConfig['min-height'], 10);
+    const adHeight = parseInt(cssConfig['ad-height'], 10);
     return (
       <div>
         <div className="masthead">
@@ -39,7 +43,13 @@ export default class UIContainer extends Component {
         <div className={`main ${(isCollapsed) ? 'main--collapsed' : ''}`}>
           <div className="main__inner">
             <div className="main__content">
-              <div className="typ typ--neutral-16 typ--shadow-thin" style={{ lineHeight: 0.9 }}>
+              <div
+                className="typ typ--neutral-16 typ--shadow-thin"
+                style={{
+                  lineHeight: 0.9,
+                  fontSize: (Math.max(minHeight, viewportHeight) - adHeight) * 0.25
+                }}
+              >
                 {this.props.numbers[this.props.user.difficulty].target}
               </div>
               <div className="typ typ--1.5x typ--secondary">make this</div>

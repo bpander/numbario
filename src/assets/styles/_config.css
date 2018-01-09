@@ -1,6 +1,7 @@
 
 :root {
   --ad-height: 50px;
+  --min-height: 568px;
 
   --base-font-size: 16px;
   --font-family: 'Source Sans Pro', sans-serif;
