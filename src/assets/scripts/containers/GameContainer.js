@@ -220,8 +220,8 @@ export default class GameContainer extends Component {
           bottom: 215,
           width: '100%',
           opacity: (shouldFoo) ? 0 : 1,
-          transform: `translateY(${(shouldFoo) ? -10 : 0}px)`,
-          transition: 'opacity 450ms, transform 450ms',
+          transform: `translateY(${(shouldFoo) ? 10 : 0}px)`,
+          transition: 'opacity 500ms, transform 500ms',
         }}>
           <div className="typ typ--1.5x typ--secondary">with this</div>
         </div>
