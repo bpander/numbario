@@ -27,7 +27,7 @@
 }
 
 .main--collapsed .main__content {
-  transform: translate3d(-50%, 100%, 0);
+  transform: translate3d(-50%, 90%, 0);
   opacity: 0;
 }
 

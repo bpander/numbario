@@ -39,14 +39,11 @@ export default class UIContainer extends Component {
         <div className={`main ${(isCollapsed) ? 'main--collapsed' : ''}`}>
           <div className="main__inner">
             <div className="main__content">
-              <div className="typ typ--neutral-16 typ--shadow-thin" style={{ lineHeight: 0.8 }}>
+              <div className="typ typ--neutral-16 typ--shadow-thin" style={{ lineHeight: 0.9 }}>
                 {this.props.numbers[this.props.user.difficulty].target}
               </div>
               <div className="typ typ--1.5x typ--secondary">make this</div>
             </div>
-          </div>
-          <div className="main__appendex">
-            <div className="typ typ--1.5x typ--secondary">with this</div>
           </div>
         </div>
         <div style={{ position: 'absolute', zIndex: 10, top: 0, right: 8 }}>
