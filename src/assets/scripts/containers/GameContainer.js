@@ -6,7 +6,6 @@ import Modal from 'components/Modal';
 import * as numbers from 'ducks/numbers';
 import * as root from 'ducks/root';
 import * as user from 'ducks/user';
-import * as rpn from 'lib/rpn';
 import { OPERATOR_INDEX } from 'lib/streams';
 
 // TODO: Organize this better
@@ -86,40 +85,6 @@ export default class GameContainer extends Component {
     return items;
   }
 
-  renderAnswer() {
-    if (!this.props.user.didGiveUp) {
-      return;
-    }
-    return (
-      <ol className="vList vList--4x">
-        {this.props.numbers[this.props.user.difficulty].answer.map((step, i) => (
-          <li key={i}>
-            <div className="hList hList--2x hList--centered">
-              <div>
-                <div className="tile">{step[rpn.AUGEND_INDEX]}</div>
-              </div>
-              <div>
-                <div className="tile">
-                  <svg className="svg svg--smaller">
-                    <use xlinkHref={operatorMap[step[rpn.OPERATOR_INDEX]]} />
-                  </svg>
-                </div>
-              </div>
-              <div>
-                <div className="tile">{step[rpn.ADDEND_INDEX]}</div>
-              </div>
-              <div>
-                <div className="tile tile--empty">
-                  {rpn.solve(...step)}
-                </div>
-              </div>
-            </div>
-          </li>
-        ))}
-      </ol>
-    );
-  }
-
   render() {
     const { difficulty } = this.props.user;
     const wasSuccessful = numbers.wasSuccessful(difficulty)(this.props.numbers);
@@ -167,7 +132,6 @@ export default class GameContainer extends Component {
             </div>
           )}
         </TransitionMotion>
-        {this.renderAnswer()}
         <TransitionMotion
           styles={openStream.map((token, i) => ({
             key: String(token),

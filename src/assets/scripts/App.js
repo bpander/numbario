@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import AnswerContainer from 'containers/AnswerContainer';
 import FooterContainer from 'containers/FooterContainer';
 import GameContainer from 'containers/GameContainer';
 import UIContainer from 'containers/UIContainer';
@@ -27,6 +28,7 @@ export class App extends Component {
     const height = Math.max(MIN_HEIGHT, viewportHeight - AD_HEIGHT);
     return (
       <div style={{ height }}>
+        <AnswerContainer />
         <UIContainer />
         <GameContainer />
         <div style={{
