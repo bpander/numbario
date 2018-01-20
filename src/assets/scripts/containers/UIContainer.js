@@ -47,7 +47,7 @@ export default class UIContainer extends Component {
                 className="typ typ--neutral-16 typ--shadow-thin"
                 style={{
                   lineHeight: 0.9,
-                  fontSize: (Math.max(minHeight, viewportHeight) - adHeight) * 0.25
+                  fontSize: (Math.max(minHeight, viewportHeight) - adHeight) * 0.25,
                 }}
               >
                 {this.props.numbers[this.props.user.difficulty].target}

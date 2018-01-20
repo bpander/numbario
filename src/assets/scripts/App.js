@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import FooterContainer from 'containers/FooterContainer';
 import GameContainer from 'containers/GameContainer';
 import UIContainer from 'containers/UIContainer';
 import * as layout from 'ducks/layout';
+import cssConfig from '_config.css.json';
 
-export default class App extends Component {
+const AD_HEIGHT = parseInt(cssConfig['ad-height'], 10);
+const MIN_HEIGHT = parseInt(cssConfig['min-height'], 10) - AD_HEIGHT;
 
-  static defaultProps = {
-    dispatch: () => {},
-  };
+export class App extends Component {
 
   onResize = () => {
     this.props.dispatch(layout.actions.setSize(
@@ -22,8 +23,10 @@ export default class App extends Component {
   }
 
   render() {
+    const { viewportHeight } = this.props.layout;
+    const height = Math.max(MIN_HEIGHT, viewportHeight - AD_HEIGHT);
     return (
-      <div>
+      <div style={{ height }}>
         <UIContainer />
         <GameContainer />
         <div style={{
@@ -38,3 +41,5 @@ export default class App extends Component {
     );
   }
 };
+
+export default connect(state => state)(App);

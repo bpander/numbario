@@ -1,12 +1,9 @@
 
 
 .container {
-  min-height: var(--min-height);
-  height: 100vh;
 }
 
 .container-inner {
-  height: calc(100% - var(--ad-height));
   position: relative;
 }
 
