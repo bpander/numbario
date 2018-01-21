@@ -3,29 +3,11 @@ import { TransitionMotion, spring, stripStyle } from 'react-motion';
 import { connect } from 'react-redux';
 
 import Modal from 'components/Modal';
+import Tile from 'components/Tile';
 import * as numbers from 'ducks/numbers';
 import * as root from 'ducks/root';
 import * as user from 'ducks/user';
 import { OPERATOR_INDEX } from 'lib/streams';
-
-// TODO: Organize this better
-const canvas = document.createElement('canvas');
-const context = canvas.getContext('2d');
-context.font = '28px "Source Sans Pro"';
-const getScale = value => {
-  const tileWidth = 48;
-  const textWidth = context.measureText(value).width;
-  const desiredWidth = tileWidth - 4;
-  const scale = desiredWidth / textWidth;
-  return Math.min(1, scale);
-};
-
-const operatorMap = {
-  '+': '#add',
-  '-': '#subtract',
-  '*': '#multiply',
-  '/': '#divide',
-};
 
 @connect(state => state)
 export default class GameContainer extends Component {
@@ -137,7 +119,6 @@ export default class GameContainer extends Component {
             key: String(token),
             data: {
               label: (i === OPERATOR_INDEX) ? token : leaves[token].value,
-              textScale: (i === OPERATOR_INDEX) ? 1 : getScale(leaves[token].value),
             },
             style: { scale: spring(1), x: spring(stagingX + i * 54) },
           }))}
@@ -145,7 +126,6 @@ export default class GameContainer extends Component {
             key: String(token),
             data: {
               label: (i === OPERATOR_INDEX) ? token : leaves[token].value,
-              textScale: (i === OPERATOR_INDEX) ? 1 : getScale(leaves[token].value),
             },
             style: { scale: 0, x: stagingX + i * 54 },
           }))}
@@ -163,17 +143,7 @@ export default class GameContainer extends Component {
                   `,
                   opacity: config.style.scale,
                 }}>
-                  <div className="tile">
-                    {(i === OPERATOR_INDEX) ? (
-                      <svg className="svg svg--smaller">
-                        <use xlinkHref={operatorMap[config.data.label]} />
-                      </svg>
-                    ) : (
-                      <span style={{ transform: `scale(${config.data.textScale})` }}>
-                        {config.data.label}
-                      </span>
-                    )}
-                  </div>
+                  <Tile label={config.data.label} />
                 </li>
               ))}
             </ul>
@@ -215,16 +185,13 @@ export default class GameContainer extends Component {
                     opacity: config.style.scale,
                   }}>
                     <div className="tile tile--stack" />
-                    <button
-                      className="tile"
+                    <Tile
+                      tag="button"
+                      label={operator}
                       disabled={isActive || !isOperatorIndex}
                       data-operator={operator}
                       onClick={this.onOperatorClick}
-                    >
-                      <svg className="svg svg--smaller">
-                        <use xlinkHref={operatorMap[operator]} />
-                      </svg>
-                    </button>
+                    />
                   </li>
                 );
               })}
@@ -235,12 +202,12 @@ export default class GameContainer extends Component {
           styles={unusedLeaves.map((leaf, i) => ({
             key: String(leaf.index),
             style: { x: spring(i * 54), scale: spring(1) },
-            data: { leaf, textScale: getScale(leaf.value) },
+            data: { leaf },
           }))}
           defaultStyles={unusedLeaves.map((leaf, i) => ({
             key: String(leaf.index),
             style: { x: i * 54, scale: 0 },
-            data: { leaf, textScale: getScale(leaf.value) },
+            data: { leaf },
           }))}
           willEnter={this.willEnter}
           willLeave={this.willLeave}
@@ -264,18 +231,13 @@ export default class GameContainer extends Component {
                     `,
                     opacity: config.style.scale,
                   }}>
-                    <button
-                      className="tile"
+                    <Tile
+                      tag="button"
+                      label={config.data.leaf.value}
                       disabled={isOperatorIndex}
                       data-number={config.data.leaf.index}
                       onClick={this.onNumberClick}
-                    >
-                      <span
-                        style={{
-                          transform: `scale(${config.data.textScale})`,
-                        }}
-                      >{config.data.leaf.value}</span>
-                    </button>
+                    />
                   </li>
                 );
               })}

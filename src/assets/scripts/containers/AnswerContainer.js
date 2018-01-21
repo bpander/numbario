@@ -2,14 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as rpn from 'lib/rpn';
 import { TransitionMotion, spring, presets } from 'react-motion';
-
-// XXX: This is defined in two places
-const operatorMap = {
-  '+': '#add',
-  '-': '#subtract',
-  '*': '#multiply',
-  '/': '#divide',
-};
+import Tile from 'components/Tile';
+import { last } from 'util/arrays';
 
 const springPreset = { stiffness: 650, damping: 40 };
 
@@ -72,22 +66,24 @@ class AnswerContainer extends React.Component {
                   }}>
                     <div className="hList hList--2x hList--centered">
                       <div>
-                        <div className="tile">{step[rpn.AUGEND_INDEX]}</div>
+                        <Tile label={step[rpn.AUGEND_INDEX]} />
                       </div>
                       <div>
-                        <div className="tile">
-                          <svg className="svg svg--smaller">
-                            <use xlinkHref={operatorMap[step[rpn.OPERATOR_INDEX]]} />
-                          </svg>
-                        </div>
+                        <Tile label={step[rpn.OPERATOR_INDEX]} />
                       </div>
                       <div>
-                        <div className="tile">{step[rpn.ADDEND_INDEX]}</div>
+                        <Tile label={step[rpn.ADDEND_INDEX]} />
                       </div>
                       <div>
-                        <div className="tile tile--empty">
-                          {rpn.solve(...step)}
-                        </div>
+                        <Tile
+                          label={rpn.solve(...step)}
+                          className="tile tile--empty"
+                          style={{
+                            textDecoration: (config === last(interpolatedStyles))
+                              ? 'underline'
+                              : ''
+                          }}
+                        />
                       </div>
                     </div>
                   </li>
