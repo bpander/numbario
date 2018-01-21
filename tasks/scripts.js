@@ -9,6 +9,7 @@ import buffer from 'vinyl-buffer';
 import browserify from 'browserify';
 import browserSync from 'browser-sync';
 import parser from 'css-variables-parser';
+import envify from 'envify/custom';
 import gulp from 'gulp';
 import gulpIf from 'gulp-if';
 import notify from './notify';
@@ -61,7 +62,10 @@ function buildScripts() {
 
   const bundler = browserify(options)
     .external(vendorArray)
-    .transform('babelify', { extensions: ['.js'] });
+    .transform('babelify', { extensions: ['.js'] })
+    .transform(envify({
+      NODE_ENV: process.env.NODE_ENV,
+    }));
 
   bundler.on('update', () => {
     notify.log('SCRIPTS: file update detected, rebuilding...');

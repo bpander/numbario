@@ -17,3 +17,7 @@ ReactDOM.render(
 );
 
 window.store = store;
+
+if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
+  navigator.serviceWorker.register('sw.js', { scope: '.' });
+}
