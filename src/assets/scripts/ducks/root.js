@@ -24,5 +24,8 @@ export const setDifficulty = difficulty => (dispatch, getState) => {
   if (!inventory.length || numbers.wasSuccessful(difficulty)(getState().numbers)) {
     actions.push(numbers.newGame(difficulty));
   }
+  if (getState().user.didGiveUp) {
+    actions.push(numbers.newGame(getState().user.difficulty));
+  }
   return dispatch(batchActions(actions));
 };
