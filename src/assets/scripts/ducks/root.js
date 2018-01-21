@@ -20,7 +20,7 @@ export const newRound = () => (dispatch, getState) => {
 
 export const setDifficulty = difficulty => (dispatch, getState) => {
   const { inventory } = getState().numbers[difficulty];
-  const actions = [ user.update({ difficulty }) ];
+  const actions = [ user.update({ difficulty, didGiveUp: false }) ];
   if (!inventory.length || numbers.wasSuccessful(difficulty)(getState().numbers)) {
     actions.push(numbers.newGame(difficulty));
   }
