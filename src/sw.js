@@ -1,13 +1,12 @@
 var CACHE_NAME = 'dependencies-cache';
 
-// TODO: Replace 1.0.0 with actual version number
 var REQUIRED_FILES = [
   'index.html',
   '/',
   'https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600',
-  'assets/styles/modern.css?v=1.0.0',
-  'assets/scripts/vendor.js?v=1.0.0',
-  'assets/scripts/main.js?v=1.0.0',
+  'assets/styles/modern.css?v={{version}}',
+  'assets/scripts/vendor.js?v={{version}}',
+  'assets/scripts/main.js?v={{version}}',
 ];
 
 self.addEventListener('install', function (event) {
@@ -19,7 +18,7 @@ self.addEventListener('install', function (event) {
         return cache.addAll(REQUIRED_FILES);
       })
       .then(function () {
-      	// At this point everything has been cached
+        // At this point everything has been cached
         return self.skipWaiting();
       })
   );
