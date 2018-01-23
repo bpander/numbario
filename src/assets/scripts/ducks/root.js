@@ -25,7 +25,10 @@ export const setDifficulty = difficulty => (dispatch, getState) => {
     actions.push(numbers.newGame(difficulty));
   }
   if (getState().user.didGiveUp) {
-    actions.push(numbers.newGame(getState().user.difficulty));
+    const oldDifficulty = getState().user.difficulty;
+    const streak = getState().user.streak;
+    actions.push(user.update({ streak: { ...streak, [oldDifficulty]: 0 } }));
+    actions.push(numbers.newGame(oldDifficulty));
   }
   return dispatch(batchActions(actions));
 };
