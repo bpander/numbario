@@ -5,6 +5,7 @@ import Gauge from 'components/Gauge';
 import * as root from 'ducks/root';
 import * as numbers from 'ducks/numbers';
 import cssConfig from '_config.css.json';
+import Modal from 'components/Modal';
 
 @connect(state => state)
 export default class UIContainer extends Component {
@@ -16,6 +17,14 @@ export default class UIContainer extends Component {
       default: return 1;
     }
   }
+
+  state = {
+    isInfoModalOpen: false,
+  };
+
+  toggleInfoModal = () => {
+    this.setState({ isInfoModalOpen: !this.state.isInfoModalOpen });
+  };
 
   onGaugeClick = () => {
     let difficulty;
@@ -35,12 +44,32 @@ export default class UIContainer extends Component {
     const adHeight = parseInt(cssConfig['ad-height'], 10);
     return (
       <div>
+        <Modal isOpen={this.state.isInfoModalOpen}>
+          <div className="modal__body typ--copy">
+            <p>
+              numbario is a game about combining numbers to make another number.
+              You don’t have to use every number, but you can only use each number once.
+              You can keep adding, subtracting, multiplying, and dividing numbers until you run out.
+              When you make the target number, you win!
+              If you get stuck, you can skip it and go on to the next one.
+            </p>
+            <p>
+              If you want more of a challenge, you can change the difficulty with the difficulty
+              meter in the upper right. There’s no time limit or ultimate goal. Just relax, have fun,
+              and enjoy solving one puzzle after another.
+            </p>
+            <p>This is a "progressive web app" so you can play even if you’re offline.</p>
+          </div>
+          <div className="modal__footer typ--center">
+            <button autoFocus className="button" onClick={this.toggleInfoModal}>Play</button>
+          </div>
+        </Modal>
         <div className="masthead">
           <div className="masthead__branding">
             <span className="typ typ--neutral-16 typ--shadow-thin typ--1.5x">numbario</span>
           </div>
           <div className="masthead__info">
-            <button className="button-no-style">
+            <button className="button-no-style" onClick={this.toggleInfoModal}>
               <svg className="svg typ--secondary" width="32" height="32">
                 <use xlinkHref="#info" />
               </svg>

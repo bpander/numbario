@@ -21,3 +21,11 @@
 .typ--copy {
   line-height: 1.3;
 }
+
+.typ--copy > p + p {
+  margin-top: 1em;
+}
+
+.typ--center {
+  text-align: center;
+}

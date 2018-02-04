@@ -256,7 +256,7 @@ export default class GameContainer extends Component {
           <div className="modal__footer">
             <ul className="hList hList--2x">
               <li>
-                <button className="button button--invert" onClick={this.onCancelClick}>
+                <button autoFocus className="button button--invert" onClick={this.onCancelClick}>
                   Cancel
                 </button>
               </li>
