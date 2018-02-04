@@ -37,7 +37,14 @@ export default class UIContainer extends Component {
       <div>
         <div className="masthead">
           <div className="masthead__branding">
-            <span className="typ typ--secondary typ--1.5x">le nombre</span>
+            <span className="typ typ--neutral-16 typ--shadow-thin typ--1.5x">numbario</span>
+          </div>
+          <div className="masthead__info">
+            <button className="button-no-style">
+              <svg className="svg typ--secondary" width="32" height="32">
+                <use xlinkHref="#info" />
+              </svg>
+            </button>
           </div>
         </div>
         <div className={`main ${(isCollapsed) ? 'main--collapsed' : ''}`}>

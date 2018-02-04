@@ -19,7 +19,7 @@
   --color-neutral-16-16: #FFFFFF;
 
   --shadow-normal: 0 2px 10px var(--color-ghost);
-  --shadow-thin: 2px 2px 0 var(--color-ghost);
+  --shadow-thin: 0.015em 0.015em 0 var(--color-ghost);
 
   --space-1x: 2px;
   --space-2x: 4px;
