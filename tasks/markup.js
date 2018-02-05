@@ -35,6 +35,7 @@ function buildMarkup() {
         `!${process.env.DIRECTORY_SRC}/assets/**`,
         `!${process.env.DIRECTORY_SRC}/templates/**`,
     ];
+    const { GOOGLE_AD_CLIENT } = process.env;
 
     return gulp
         .src(src)
@@ -47,6 +48,9 @@ function buildMarkup() {
                 version: pkg.version,
                 date: new Date().toISOString(),
                 env: process.env.NODE_ENV,
+                GOOGLE_AD_CLIENT: (GOOGLE_AD_CLIENT === 'false')
+                    ? false
+                    : GOOGLE_AD_CLIENT,
             })
             .data(`${process.env.DIRECTORY_SRC}/assets/data/*.{js,json}`)
         )
