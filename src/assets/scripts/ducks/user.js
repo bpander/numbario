@@ -1,3 +1,4 @@
+import ReactGA from 'react-ga';
 import { Difficulty } from 'config';
 import createSkinnyReducer from 'lib/createSkinnyReducer';
 
@@ -32,4 +33,14 @@ export const incrementStreak = () => (dispatch, getState) => {
     [user.difficulty]: Math.max(streak[user.difficulty], user.bests[user.difficulty]),
   };
   return dispatch(update({ streak, bests }));
+};
+
+export const confirmGiveUp = () => (dispatch, getState) => {
+  const { user } = getState();
+  ReactGA.event({
+    category: 'Play',
+    action: 'Gave up',
+    label: user.difficulty,
+  });
+  dispatch(update({ didGiveUp: true, isGivingUp: false }));
 };

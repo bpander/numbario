@@ -28,7 +28,7 @@ export default class GameContainer extends Component {
 
   onCancelClick = () => this.props.dispatch(user.update({ isGivingUp: false }));
 
-  onGiveUpClick = () => this.props.dispatch(user.update({ didGiveUp: true, isGivingUp: false }));
+  onGiveUpClick = () => this.props.dispatch(user.confirmGiveUp());
 
   onOperatorClick = e => {
     const operator = e.currentTarget.getAttribute('data-operator');

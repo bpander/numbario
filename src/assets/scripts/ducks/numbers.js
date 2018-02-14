@@ -1,3 +1,4 @@
+import ReactGA from 'react-ga';
 import { createSelector } from 'reselect';
 import { Difficulty } from 'config';
 import { chunk, last, times } from 'util/arrays';
@@ -200,6 +201,11 @@ export const streamPush = difficulty => token => (dispatch, getState) => {
       }));
       const _wasSuccessful = wasSuccessful(difficulty)(getState().numbers);
       if (_wasSuccessful) {
+        ReactGA.event({
+          category: 'Play',
+          action: 'Won',
+          label: difficulty,
+        });
         dispatch(user.incrementStreak());
       }
     }, 400);

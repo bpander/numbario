@@ -2,6 +2,7 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import ReactGA from 'react-ga';
 import App from 'App';
 import configureStore from 'configureStore';
 
@@ -16,7 +17,10 @@ ReactDOM.render(
   node,
 );
 
-window.store = store;
+if (process.env.ANALYTICS_TRACKING_ID) {
+  ReactGA.initialize(process.env.ANALYTICS_TRACKING_ID);
+  ReactGA.pageview('/');
+}
 
 if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
   navigator.serviceWorker.register('sw.js', { scope: '.' });
