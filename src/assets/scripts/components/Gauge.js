@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Motion, presets, spring } from 'react-motion';
 import config from '_config.css';
 
+const RAD_TO_DEG = 180 / Math.PI;
+
 export default class Gauge extends Component {
 
   static defaultProps = {
@@ -36,12 +38,13 @@ export default class Gauge extends Component {
     const angle = this.angles[this.props.position];
     const rx = this.innerRadius;
     const ry = this.innerRadius;
+    const { outerRadius } = this;
 
     return (
       <div className="gauge">
         <div className="gauge__band" />
         <button className="gauge__face" onClick={this.props.onClick}>
-          <svg viewBox={`0 0 ${this.outerRadius * 2} ${this.outerRadius * 2}`}>
+          <svg viewBox={`0 0 ${outerRadius * 2} ${outerRadius * 2}`}>
             <circle fill={config['color-primary']} cx="23.4" cy="52.1" r="2"/>
             <circle fill={config['color-primary']} cx="51.9" cy="52.1" r="2"/>
             <circle fill={config['color-primary']} cx="23.4" cy="22.7" r="2"/>
@@ -75,10 +78,9 @@ export default class Gauge extends Component {
                     />
                     <path
                       fill={config['color-primary']}
-                      style={{
-                        transformOrigin: this.outerRadius,
-                        transform: `rotate(${style.angle}rad)`,
-                      }}
+                      transform={
+                        `rotate(${style.angle * RAD_TO_DEG} ${outerRadius}, ${outerRadius})`
+                      }
                       d={
                         // eslint-disable-next-line max-len
                         'M32.8,42.2c-2.5-2.5-2.5-6.4-0.1-9.2c2.2-2.5,6.2-2.7,8.9-0.5c0.7,0.5,1.3,0.9,2.2,1.1c3.3,0.7,6.5,1.5,9.8,2.3c0.9,0.2,1.8,0.5,1.8,1.7c0,1.2-0.8,1.6-1.8,1.8c-3.4,0.8-6.8,1.6-10.2,2.3c-0.6,0.1-1.1,0.4-1.6,0.8C39.2,44.8,35.2,44.7,32.8,42.2z'
