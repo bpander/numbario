@@ -67,19 +67,20 @@ export default class GameContainer extends Component {
     return items;
   }
 
+  // eslint-disable-next-line complexity
   render() {
-    const { difficulty } = this.props.user;
-    const wasSuccessful = numbers.wasSuccessful(difficulty)(this.props.numbers);
-    // TODO: Rename shouldFoo. shouldFoo = should show success/error
-    const shouldFoo = wasSuccessful || this.props.user.didGiveUp;
-    const leaves = (shouldFoo) ? [] : numbers.getLeaves(difficulty)(this.props.numbers);
-    const openStream =  (shouldFoo) ? [] : numbers.getOpenStream(difficulty)(this.props.numbers);
-    const operators = (shouldFoo) ? [] : [ '+', '-', '*', '/' ];
+    const { props } = this;
+    const { difficulty } = props.user;
+    const wasSuccessful = numbers.wasSuccessful(difficulty)(props.numbers);
+    const isInterstitial = wasSuccessful || props.user.didGiveUp;
+    const leaves = (isInterstitial) ? [] : numbers.getLeaves(difficulty)(props.numbers);
+    const openStream =  (isInterstitial) ? [] : numbers.getOpenStream(difficulty)(props.numbers);
+    const operators = (isInterstitial) ? [] : [ '+', '-', '*', '/' ];
     const unusedLeaves = leaves.filter(l => !l.isUsed && !openStream.includes(l.index));
-    const { viewportWidth } = this.props.layout;
+    const { viewportWidth } = props.layout;
     const stagingX = (viewportWidth - (openStream.length * 48 + (openStream.length - 1) * 6)) / 2;
     const statusItems = this.getStatusItems();
-    const isOperatorIndex = numbers.isOperatorIndex(difficulty)(this.props.numbers);
+    const isOperatorIndex = numbers.isOperatorIndex(difficulty)(props.numbers);
 
     return (
       <div style={{
@@ -153,8 +154,8 @@ export default class GameContainer extends Component {
           position: 'absolute',
           bottom: 215,
           width: '100%',
-          opacity: (shouldFoo) ? 0 : 1,
-          transform: `translateY(${(shouldFoo) ? 10 : 0}px)`,
+          opacity: (isInterstitial) ? 0 : 1,
+          transform: `translateY(${(isInterstitial) ? 10 : 0}px)`,
           transition: 'opacity 500ms, transform 500ms',
         }}>
           <div className="typ typ--1.5x typ--secondary">with this</div>
@@ -244,7 +245,7 @@ export default class GameContainer extends Component {
             </ul>
           )}
         </TransitionMotion>
-        <Modal isOpen={this.props.user.isGivingUp}>
+        <Modal isOpen={props.user.isGivingUp}>
           <div className="modal__body typ typ--copy">
             Are you sure you want to see the answer?
             This will reset your streak {' '}
