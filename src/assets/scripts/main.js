@@ -10,17 +10,17 @@ const store = configureStore();
 const node = document.getElementById('js-app');
 node.innerHTML = '';
 
+if (process.env.ANALYTICS_TRACKING_ID) {
+  ReactGA.initialize(process.env.ANALYTICS_TRACKING_ID);
+  ReactGA.pageview('/');
+}
+
 ReactDOM.render(
   <Provider store={store}>
     <App />
   </Provider>,
   node,
 );
-
-if (process.env.ANALYTICS_TRACKING_ID) {
-  ReactGA.initialize(process.env.ANALYTICS_TRACKING_ID);
-  ReactGA.pageview('/');
-}
 
 if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
   navigator.serviceWorker.register('sw.js', { scope: '.' });

@@ -65,6 +65,7 @@ function buildScripts() {
     .transform('babelify', { extensions: ['.js'] })
     .transform(envify({
       NODE_ENV: process.env.NODE_ENV,
+      ANALYTICS_TRACKING_ID: process.env.ANALYTICS_TRACKING_ID,
     }));
 
   bundler.on('update', () => {

@@ -35,7 +35,6 @@ function buildMarkup() {
         `!${process.env.DIRECTORY_SRC}/assets/**`,
         `!${process.env.DIRECTORY_SRC}/templates/**`,
     ];
-    const { ANALYTICS_TRACKING_ID } = process.env;
 
     return gulp
         .src(src)
@@ -48,9 +47,6 @@ function buildMarkup() {
                 version: pkg.version,
                 date: new Date().toISOString(),
                 env: process.env.NODE_ENV,
-                ANALYTICS_TRACKING_ID: (ANALYTICS_TRACKING_ID === 'false')
-                    ? false
-                    : ANALYTICS_TRACKING_ID,
             })
             .data(`${process.env.DIRECTORY_SRC}/assets/data/*.{js,json}`)
         )
