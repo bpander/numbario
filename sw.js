@@ -4,9 +4,9 @@ var REQUIRED_FILES = [
   'index.html',
   '/',
   'https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600',
-  'assets/styles/modern.css?v=1.0.4',
-  'assets/scripts/vendor.js?v=1.0.4',
-  'assets/scripts/main.js?v=1.0.4',
+  'assets/styles/modern.css?v=1.0.5',
+  'assets/scripts/vendor.js?v=1.0.5',
+  'assets/scripts/main.js?v=1.0.5',
 ];
 
 self.addEventListener('install', function (event) {
