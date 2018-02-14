@@ -55,8 +55,8 @@ export default class UIContainer extends Component {
             </p>
             <p>
               If you want more of a challenge, you can change the difficulty with the difficulty
-              meter in the upper right. There’s no time limit or ultimate goal. Just relax, have fun,
-              and enjoy solving one puzzle after another.
+              meter in the upper right. There’s no time limit or ultimate goal. Just relax, have
+              fun, and enjoy solving one puzzle after another.
             </p>
             <p>This is a "progressive web app" so you can play even if you’re offline.</p>
           </div>

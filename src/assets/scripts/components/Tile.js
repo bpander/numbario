@@ -35,7 +35,7 @@ export default class Tile extends React.Component {
   render() {
     const { label, tag, ...rest } = this.props;
     const Tag = tag || 'div';
-    const isOperator = operatorMap[label] !== undefined;
+    const isOperator = operatorMap[label] != null;
     return (
       <Tag
         className="tile"

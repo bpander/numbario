@@ -160,6 +160,12 @@ export const newGame = difficulty => {
     validator: getValidator(difficulty),
   });
 
+  ReactGA.event({
+    category: 'Play',
+    action: 'Game started',
+    label: difficulty,
+  });
+
   return update({
     [difficulty]: {
       ...getInitialState(),

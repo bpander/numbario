@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as rpn from 'lib/rpn';
-import { TransitionMotion, spring, presets } from 'react-motion';
+import { TransitionMotion, spring } from 'react-motion';
 import Tile from 'components/Tile';
 import { last } from 'util/arrays';
 
@@ -32,17 +32,6 @@ class AnswerContainer extends React.Component {
   }
 
   render() {
-    const { props } = this;
-    let styles = [];
-    const steps = props.numbers[props.user.difficulty].answer;
-    if (this.props.user.didGiveUp) {
-      styles = steps.map((step, i) => ({
-        key: String(i),
-        style: { scale: 1 },
-        data: step,
-      }));
-    }
-
     return (
       <div style={{
         position: 'absolute',
@@ -81,7 +70,7 @@ class AnswerContainer extends React.Component {
                           style={{
                             textDecoration: (config === last(interpolatedStyles))
                               ? 'underline'
-                              : ''
+                              : '',
                           }}
                         />
                       </div>
