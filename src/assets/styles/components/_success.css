@@ -1,6 +1,6 @@
 
 @keyframes pathAnim {
-  to { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: 0px; }
 }
 
 .success.animated .success__path--circle {
@@ -17,16 +17,16 @@
 }
 
 .success__path--circle {
-  stroke-dasharray: 60;
-  stroke-dashoffset: 60;
+  stroke-dasharray: 60px;
+  stroke-dashoffset: 60px;
   transform-origin: 50%;
   transform: rotate(-90deg);
 }
 
 .success__path--check {
-  stroke-width: 1.25;
+  stroke-width: 1.25px;
   stroke-linejoin: round;
-  stroke-miterlimit: 10;
-  stroke-dasharray: 18;
-  stroke-dashoffset: 18;
+  stroke-miterlimit: 10px;
+  stroke-dasharray: 18px;
+  stroke-dashoffset: 18px;
 }

@@ -8,6 +8,5 @@
 }
 
 .container-ad {
-  background: red;
   height: var(--ad-height);
 }
