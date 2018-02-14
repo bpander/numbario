@@ -1,0 +1,52 @@
+<!doctype html>
+<!--
+    Build information
+    Version: 1.0.1
+    Date: 2018-02-14T02:47:34.138Z
+    Environment: production
+-->
+<html class="no-js" lang="en-us">
+
+    <head>
+        <title>numbario - Math Puzzle Game</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="numbario is a game about combining numbers to make another number. There's no time limit or ultimate goal. Just relax, have fun, and enjoy solving one puzzle after another." />
+        <meta name="author" content="" />
+        <!--[if IE]><meta http-equiv="cleartype" content="on" /><![endif]-->
+        <!-- Open Graph -->
+        <meta property="og:url" content="https://numbario.com" />
+        <meta property="og:type" content="game" />
+        <meta property="og:title" content="numbario - Math Puzzle Game" />
+        <meta property="og:description" content="numbario is a game about combining numbers to make another number. There's no time limit or ultimate goal. Just relax, have fun, and enjoy solving one puzzle after another." />
+        <meta property="og:image:width" content="192" />
+        <meta property="og:image:height" content="192" />
+        <meta property="og:image" content="https://numbario.com/favicon.png" />
+        <link rel="manifest" href="manifest.json">
+        <!-- Touch Icons - iOS and Android -->
+        <link rel="apple-touch-icon" sizes="192x192" href="favicon.png?v=1.0.1" />
+        <!-- All other browsers -->
+        <link rel="icon" type="image/png" sizes="192x192" href="favicon.png?v=1.0.1" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" />
+        <link rel="stylesheet" media="screen, projection" href="assets/styles/modern.css?v=1.0.1" /> </head>
+
+    <body>
+        <div class="visually-hidden">
+            <!-- inject:svg -->
+            <svg xmlns="http://www.w3.org/2000/svg"><symbol id="add" viewBox="0 0 24 24"><path d="M2 10.7h20v2.7H2v-2.7z"/><path d="M13.3 2v20h-2.7V2h2.7z"/></symbol><symbol id="divide" viewBox="0 0 24 24"><path d="M2 10.7h20v2.7H2v-2.7zm7.7-6.4c0-1.3 1-2.3 2.4-2.3 1.3 0 2.3.9 2.3 2.3s-1 2.3-2.3 2.3c-1.4 0-2.4-1-2.4-2.3zM12 17.4c1.3 0 2.3.9 2.3 2.3S13.3 22 12 22s-2.4-.9-2.4-2.3c.1-1.3 1.1-2.3 2.4-2.3z"/></symbol><symbol id="info" viewBox="0 0 24 24"><path d="M11 17h2v-6h-2v6zm1-15C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zM11 9h2V7h-2v2z"/></symbol><symbol id="link" viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></symbol><symbol id="multiply" viewBox="0 0 24 24"><path d="M4.4 2L22 19.7 19.6 22 2 4.4 4.4 2z"/><path d="M22 4.4L4.4 22 2 19.7 19.6 2 22 4.4z"/></symbol><symbol id="refresh" viewBox="0 0 24 24"><path d="M2 2v8.8h8.8l-4-4c1.5-1.6 3.7-2.5 6.2-2.2 3.4.4 6.1 3.2 6.5 6.6.5 4.5-3 8.4-7.4 8.4-3 0-5.6-1.8-6.8-4.3-.2-.4-.6-.7-1.1-.7H4c-.9 0-1.4.9-1.1 1.7 1.6 3.5 5.3 6 9.5 5.8 5.2-.2 9.4-4.5 9.6-9.7C22.2 6.7 17.6 2 12 2 9.2 2 6.8 3.1 4.9 4.9L2 2z"/></symbol><symbol id="skip" viewBox="0 0 24 24"><path fill="#FFF" d="M2.3 20.5c0 .8.5 1.1 1.2.6l11.7-8.3c.7-.5.7-1.2 0-1.7L3.5 2.9c-.7-.5-1.2-.2-1.2.6v17zM19.8 2c-.8 0-1.5.7-1.5 1.5v17c0 .8.7 1.5 1.5 1.5h.4c.8 0 1.5-.7 1.5-1.5v-17c0-.8-.7-1.5-1.5-1.5h-.4z"/></symbol><symbol id="subtract" viewBox="0 0 24 24"><path d="M2 10.7h20v2.7H2v-2.7z"/></symbol><symbol id="success" viewBox="0 0 24 24"><circle class="success__path success__path--circle" cx="12" cy="12" r="9.5"/><path class="success__path success__path--check" d="M5.7 11.9l4.3 4.2 8.3-8.2"/></symbol><symbol id="trophy" viewBox="0 0 24 24"><path d="M21.5 3.6c0 .2-.1.5-.1.7-.2 1.9-.7 3.6-1.8 5.1-1 1.3-2.2 2.2-3.9 2.4-.2 0-.4.1-.5.3-.6.7-1.4 1.2-2.3 1.5-.1 0-.1.1-.1.1v2.6c.2 0 .4.1.6.1.6.2 1.2.4 1.7.8.1 0 .1.1.1.2v2.5H8.8v-.2-2.3c0-.1 0-.2.2-.3.6-.4 1.3-.7 2-.8.1 0 .2-.1.2-.2v-2.3c0-.1 0-.2-.2-.3-.9-.2-1.7-.8-2.3-1.5-.1-.2-.3-.2-.5-.3-1.2 0-2.3-.6-3.2-1.5-1.1-1.1-1.8-2.5-2.1-4-.2-.8-.2-1.6-.3-2.4v-.2-.2h2.5v1.2H3.9v.2c.1 1.1.4 2.2.9 3.1.6 1.1 1.4 2 2.6 2.5.1 0 .1 0 .2.1-.2-.7-.5-1.4-.7-2-.5-1.8-.7-3.6-.7-5.3 0-.3 0-.3.3-.4 2.2-.7 4.5-.9 6.9-.8 1.5.1 2.9.3 4.3.7.2 0 .2.1.2.3-.1 1-.1 2-.2 3-.2 1.5-.5 2.9-1.2 4.2 0 0 0 .1-.1.2.1 0 .2-.1.2-.1.6-.3 1.2-.7 1.6-1.2.8-.9 1.3-1.9 1.6-3 .1-.5.2-1.1.4-1.6H19c0-.4 0-.8.1-1.2h2.4v.3zM16.8 20.8V22H7.3v-1.2h9.5z"/></symbol><symbol id="undo" viewBox="0 0 24 24"><path d="M12.5 8.5c-2.6 0-5 1-6.9 2.6L2 7.5v9h9l-3.6-3.6c1.4-1.2 3.1-1.9 5.1-1.9 3.1 0 5.9 1.8 7.2 4.5.3.5.9.8 1.5.6h.1c.7-.2 1-1 .7-1.7-1.8-3.5-5.4-5.9-9.5-5.9z"/></symbol></svg>
+            <!-- endinject -->
+        </div>
+        <div class="container">
+            <div class="container-inner" id="js-app">Loading...</div>
+            <div class="container-ad"></div>
+        </div>
+        <script>
+            window.GLOBAL = {
+                VERSION: '1.0.1',
+            };
+        </script>
+        <script src="assets/scripts/vendor.js?v=1.0.1"></script>
+        <script src="assets/scripts/main.js?v=1.0.1"></script>
+    </body>
+
+</html>
